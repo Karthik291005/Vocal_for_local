@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product — Vocal for Local</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+
+  /* Add or update these rules to handle the side-by-side buttons */
+.action-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+
+/* This ensures buttons stack on very small mobile devices but stay side-by-side otherwise */
+@media (max-width: 480px) {
+  .action-row div[style*="display: flex"] {
+    flex-direction: column;
+  }
+}
+
+    .snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+    .snav-btn:hover, .snav-btn.active { color: var(--green); }
+.product-layout { max-width:1150px; margin:0 auto; padding:2rem; display:grid; grid-template-columns:1fr 1fr; gap:3.5rem; }
+.product-img-main { width:100%; aspect-ratio:1; background:linear-gradient(135deg,#EED9B7,#C4956A); border-radius:1.1rem; display:flex; align-items:center; justify-content:center; font-size:10rem; border:1px solid var(--border); position:relative; overflow: hidden; }
+.product-img-main img { width: 100%; height: 100%; object-fit: cover; }
+.product-img-badge { position:absolute; top:1rem; left:1rem; z-index: 10; }
+.product-thumbs { display:flex; gap:0.6rem; margin-top:0.8rem; }
+.product-thumb { width:70px; height:70px; background:linear-gradient(135deg,#EED9B7,#D4A97A); border-radius:0.5rem; display:flex; align-items:center; justify-content:center; font-size:1.8rem; border:2px solid var(--border); cursor:pointer; transition:border-color 0.2s; overflow: hidden; }
+.product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.product-thumb.active, .product-thumb:hover { border-color:var(--saffron); }
+
+.detail-cat { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--saffron); margin-bottom:0.5rem; }
+.detail-name { font-family:'Playfair Display',serif; font-size:2.3rem; font-weight:900; color:var(--ink); line-height:1.1; margin-bottom:0.4rem; }
+.detail-artisan { font-size:0.9rem; color:var(--muted); margin-bottom:1.1rem; }
+.detail-price { font-family:'Playfair Display',serif; font-size:2.1rem; color:var(--terra); font-weight:700; margin-bottom:0.4rem; }
+.detail-stock { font-size:0.78rem; margin-bottom:1.5rem; }
+.stock-ok { color:var(--forest); font-weight:600; }
+.stock-low { color:var(--terra); font-weight:600; }
+
+.tabs { display:flex; border-bottom:2px solid var(--border); margin-bottom:1.5rem; }
+.tab-btn { background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-2px; padding:0.65rem 1.2rem; font-family:'DM Sans',sans-serif; font-size:0.86rem; font-weight:500; color:var(--muted); cursor:pointer; transition:all 0.2s; }
+.tab-btn.active { border-bottom-color:var(--saffron); color:var(--saffron); font-weight:700; }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
+
+.detail-desc { color:var(--ink); font-size:0.93rem; line-height:1.75; opacity:0.82; }
+.story-box { background:linear-gradient(135deg,#FFF8EE,#FDF0DC); border:1px solid rgba(212,160,23,0.35); border-left:4px solid var(--gold); border-radius:0.5rem; padding:1.3rem 1.6rem; }
+.story-label { font-size:0.62rem; text-transform:uppercase; letter-spacing:0.2em; color:var(--gold); font-weight:700; margin-bottom:0.6rem; }
+.story-text { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; color:var(--ink); line-height:1.75; }
+
+    .snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+    .snav-btn:hover, .snav-btn.active { color: var(--green); }
+    
+.specs-tbl { width:100%; border-collapse:collapse; font-size:0.9rem; }
+.specs-tbl tr { border-bottom:1px solid var(--border); }
+.specs-tbl td { padding:0.55rem 0.4rem; }
+.specs-tbl td:first-child { color:var(--muted); width:38%; font-size:0.8rem; }
+.specs-tbl td:last-child { font-weight:600; color:var(--ink); }
+
+.qr-section { background:linear-gradient(135deg,#FFF8EE,#FDF0DC); border:1.5px solid rgba(212,160,23,0.35); border-radius:0.8rem; padding:1.5rem; margin-bottom:1.5rem; display:flex; gap:1.5rem; align-items:flex-start; flex-wrap:wrap; }
+.qr-info h4 { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; margin-bottom:0.4rem; }
+.qr-info p { font-size:0.82rem; color:var(--muted); line-height:1.55; margin-bottom:0.8rem; }
+
+.action-row { display:flex; flex-direction:column; gap:0.7rem; }
+.qty-row { display:flex; align-items:center; gap:0.8rem; margin-bottom:0.5rem; }
+.qty-btn { background:var(--ink); color:#fff; border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; transition:background 0.2s; }
+.qty-num { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; min-width:2rem; text-align:center; }
+
+.reviews-full { max-width:1150px; margin:0 auto; padding:0 2rem 3rem; }
+.reviews-full h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:1.2rem; padding-bottom:0.6rem; border-bottom:1px solid var(--border); }
+
+@media (max-width:900px) { .product-layout { grid-template-columns:1fr; gap:2rem; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <div class="nav-links">
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="buyer-home.html">Shop</a>
+       <a class="nav-link" href="my-orders.html">My Orders</a>
+      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+    </div>
+  </nav>
+
+<div class="breadcrumb" id="breadcrumb"></div>
+<div class="product-layout" id="product-layout"></div>
+<div class="reviews-full" id="reviews-full"></div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">You May Also Like</div>
+    <a href="buyer-home.html" class="btn btn-outline btn-sm">View All</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem" id="related-grid"></div>
+</div>
+
+<script src="shared.js"></script>
+  <script>
+  // --- PAGE INITIALIZATION ---
+  window.addEventListener('DOMContentLoaded', () => {
+      if (typeof renderRoleBasedNav === 'function') renderRoleBasedNav();
+      const cartBadge = document.getElementById('cart-count');
+      if (cartBadge && typeof Store !== 'undefined') cartBadge.textContent = Store.count();
+      renderProductDetail();
+  });
+
+function renderProductDetail() {
+    const params = new URLSearchParams(location.search);
+    const pid = parseInt(params.get('id') || '1');
+    const p = ALL_PRODUCTS.find(x => x.id === pid); //
+
+    if (!p) {
+        document.body.innerHTML = '<div style="padding:4rem;text-align:center">Product not found. <a href="buyer-home.html">Browse products</a></div>';
+        return;
+    }
+
+    const cat = CATEGORIES.find(c => c.id === p.category);
+    const specRows = Object.entries(p.specs || {}).map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+    const qrUrl = genQR(p.id);
+
+    const sellerProductCount = ALL_PRODUCTS.filter(item => item.artisan === p.artisan).length;
+
+    // Breadcrumb
+    document.getElementById('breadcrumb').innerHTML = `
+        <a href="index.html">Home</a><span>›</span><a href="buyer-home.html">Shop</a><span>›</span>
+        <a href="buyer-home.html?cat=${p.category}">${cat?.label||p.category}</a><span>›</span><strong>${p.name}</strong>`;
+
+    // Images
+    const mainImg = p.image ? `<img src="${p.image}" alt="${p.name}">` : `<div style="font-size:10rem;">🏺</div>`;
+
+    // stock and description
+    const stockVal = p.stock || 0; 
+    const descriptionText = p.desc || "No description available for this handcrafted item.";
+
+    document.getElementById('product-layout').innerHTML = `
+        <div>
+          <div class="product-img-main">
+            <span class="product-badge product-img-badge gold">${p.badge || 'Artisan Made'}</span>
+            ${mainImg}
+          </div>
+          </div>
+        
+        <div>
+          <div class="detail-cat">${cat?.label||p.category}</div>
+          <div class="detail-name">${p.name}</div>
+          <div class="detail-artisan">
+            by <strong>${p.artisan || 'Handcrafted Tradition'}</strong> · ${p.artisanVillage || cat?.origin || 'India'}
+            <span style="display:block; font-size:0.75rem; color:var(--forest); margin-top:0.3rem; font-weight:500;">
+  📦 Only <strong>${stockVal}</strong> items currently in stock
+</span>
+          </div>
+          <div class="detail-price">${fmt(p.price)}</div>
+          
+          <div class="detail-stock">${stockVal > 5 ? `<span class="stock-ok">✓ In Stock</span>` : `<span class="stock-low">⚠ Only ${stockVal} left</span>`}</div>
+
+          <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('desc',this)">Description</button>
+            <button class="tab-btn" onclick="showTab('story',this)">Story</button>
+            <button class="tab-btn" onclick="showTab('specs',this)">Specifications</button>
+          </div>
+          <div id="tab-desc" class="tab-content active"><p class="detail-desc">${descriptionText}</p></div>
+          <div id="tab-story" class="tab-content">
+            <div class="story-box">
+              <div class="story-label">📜 Artisan's Story</div>
+              <div class="story-text">"${p.story || cat?.story || 'A legacy of handmade excellence.'}"</div>
+            </div>
+          </div>
+          <div id="tab-specs" class="tab-content"><table class="specs-tbl"><tbody>${specRows}</tbody></table></div>
+
+          <div class="qr-section">
+            <img src="${qrUrl}" width="120" height="120" alt="Authenticity QR" style="border-radius:0.4rem" />
+            <div class="qr-info">
+              <h4>🔐 Authenticity Certificate</h4>
+              <p>Scan to verify the artisan's identity, village of origin, and craft heritage.</p>
+            </div>
+          </div>
+
+<div class="action-row">
+  <div class="qty-row">
+    <button class="qty-btn" onclick="changeQty(-1)">−</button>
+    <span class="qty-num" id="qty-display">1</span>
+    <button class="qty-btn" onclick="changeQty(1)">+</button>
+  </div>
+  
+  <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+    <button class="btn btn-primary" style="flex: 1;" onclick="addToCart(${p.id})">🛒 Add to Cart</button>
+    <a href="cart.html" class="btn btn-outline" style="flex: 1; justify-content: center;">Go to Cart →</a>
+  </div>
+</div>`;
+
+    renderRelated(p);
+}
+  function renderRelated(p) {
+      const related = PRODUCTS.filter(x => x.id !== p.id && x.category === p.category).slice(0,4);
+      document.getElementById('related-grid').innerHTML = related.map(r => `
+          <div class="product-card" onclick="location.href='product.html?id=${r.id}'">
+            <div class="product-card-img">
+              ${r.image ? `<img src="${r.image}" alt="${r.name}" style="width:100%;height:100%;object-fit:cover;">` : r.emoji}
+            </div>
+            <div class="product-card-body">
+              <div class="product-name">${r.name}</div>
+              <div class="product-footer">
+                <span class="product-price">${fmt(r.price)}</span>
+              </div>
+            </div>
+          </div>`).join('') || 'No related products found.';
+  }
+
+  function showTab(id, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+  }
+
+  function changeQty(d) {
+      const el = document.getElementById('qty-display');
+      const newVal = Math.max(1, parseInt(el.textContent) + d);
+      el.textContent = newVal;
+  }
+
+  function addToCart(pid) {
+      const qty = parseInt(document.getElementById('qty-display').textContent);
+      for (let i = 0; i < qty; i++) Store.add(pid);
+      document.getElementById('cart-count').textContent = Store.count();
+      const t = document.createElement('div'); t.className = 'toast'; t.textContent = '✓ Added to cart!'; document.body.appendChild(t); setTimeout(() => t.remove(), 2500);
+  }
+  </script>
+</body>
+</html>

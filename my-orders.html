@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>My Orders — Vocal for Local</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .orders-layout { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    .order-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.8rem; padding: 1.5rem; margin-bottom: 1.5rem; transition: transform 0.2s; }
+    .order-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 0.8rem; margin-bottom: 1rem; align-items: center; }
+    .order-id { font-weight: 700; color: var(--ink); font-size: 1.1rem; }
+    .order-status { padding: 0.3rem 0.8rem; border-radius: 2rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+    .status-pending { background: #FFF4E5; color: #D48806; border: 1px solid #FFE58F; }
+    .status-shipped { background: #E6F7FF; color: #1890FF; border: 1px solid #91D5FF; }
+    .status-picked { background: #F6FFED; color: #52C41A; border: 1px solid #B7EB8F; }
+    .item-details { display: flex; gap: 1.5rem; align-items: center; }
+    .item-info h3 { font-family: 'Playfair Display', serif; margin-bottom: 0.3rem; color: var(--ink); }
+    .meta-text { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+    .snav-btn:hover, .snav-btn.active { color: var(--green); }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <div class="nav-links">
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="buyer-home.html">Shop</a>
+       <a class="nav-link" href="my-orders.html">My Orders</a>
+      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+    </div>
+</nav>
+
+  <div class="orders-layout">
+    <h2 style="font-family:'Playfair Display',serif; margin-bottom:2rem; font-size: 2rem;">Your Order History</h2>
+    <div id="orders-container"></div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    function renderMyOrders() {
+  const userEmail = localStorage.getItem("user_email"); //
+  const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+  
+  // Log to console so you can see if it matches
+  console.log("Logged in as:", userEmail);
+  console.log("Total orders in system:", allOrders.length);
+
+  const myOrders = allOrders.filter(o => o.buyerEmail === userEmail);
+  const container = document.getElementById('orders-container');
+  
+  if (myOrders.length === 0) {
+    // Show a more helpful message
+    container.innerHTML = `
+      <div style="text-align:center; padding: 3rem;">
+        <h3>No orders found for: ${userEmail}</h3>
+        <p>Total orders in system: ${allOrders.length}</p>
+        <a href="buyer-home.html" class="btn btn-primary">Try Shopping Again</a>
+      </div>`;
+    return;
+  }
+
+  // 4. Render newest first
+  container.innerHTML = myOrders.slice().reverse().map(o => {
+    const statusClass = 'status-' + (o.status || 'pending').toLowerCase().replace(' ', '');
+    
+    return `
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <span class="order-id">Order #${o.id}</span>
+            <span style="margin-left: 1rem; font-size: 0.8rem; color: var(--muted);">${o.date}</span>
+          </div>
+          <span class="order-status ${statusClass}">${o.status}</span>
+        </div>
+        <div class="item-details">
+          <div class="item-info">
+            <h3>${o.productName}</h3>
+            
+            <p class="meta-text" style="color:var(--saffron); font-weight:bold; font-size:0.9rem; margin-top:0.5rem; margin-bottom:0.8rem;">
+              🔑 Delivery OTP: ${o.deliveryCode || 'N/A'}
+            </p>
+
+            <p class="meta-text">🏺 Artisan: <strong>${o.artisan}</strong></p>
+            <p class="meta-text">📍 Delivery to: ${o.buyerAddr}</p>
+            <p class="meta-text">📞 Contact: ${o.buyerPhone}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+    // Run on load
+    window.addEventListener('DOMContentLoaded', renderMyOrders);
+  </script>
+</body>
+</html>

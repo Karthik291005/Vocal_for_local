@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cart & Checkout — Vocal for Local</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.checkout-layout { max-width:1100px; margin:0 auto; padding:2rem; display:grid; grid-template-columns:1.6fr 1fr; gap:2.5rem; align-items:start; }
+.cart-section h2 { font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:1.5rem; }
+.steps { display:flex; align-items:center; gap:0; margin-bottom:2.5rem; }
+.step-item { display:flex; align-items:center; gap:0.6rem; }
+.step-circle { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0; }
+.step-circle.done { background:var(--forest); color:#fff; }
+.step-circle.active { background:var(--saffron); color:#fff; }
+.step-circle.pending { background:var(--border); color:var(--muted); }
+.step-label { font-size:0.78rem; font-weight:600; }
+.step-label.active { color:var(--saffron); }
+.step-label.done { color:var(--forest); }
+.step-label.pending { color:var(--muted); }
+.step-line { flex:1; height:2px; background:var(--border); margin:0 0.5rem; min-width:30px; }
+.step-line.done { background:var(--forest); }
+.snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+.snav-btn:hover, .snav-btn.active { color: var(--green); }
+.cart-item { display:flex; gap:1rem; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:0.6rem; padding:1rem 1.2rem; margin-bottom:0.8rem; }
+.cart-info { flex:1; }
+.cart-name { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; margin-bottom:0.15rem; }
+.cart-price { color:var(--terra); font-weight:700; font-size:0.95rem; }
+.cart-remove { background:none; border:none; color:#bbb; cursor:pointer; font-size:1.2rem; padding:0.3rem; }
+.order-summary { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; position:sticky; top:80px; }
+.summary-row { display:flex; justify-content:space-between; font-size:0.87rem; margin-bottom:0.55rem; color:var(--muted); }
+.summary-row.total { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:900; color:var(--ink); border-top:2px solid var(--border); margin-top:0.8rem; padding-top:0.8rem; }
+.hidden { display: none; }
+.qr-wrap { background:#fff; padding:1rem; border-radius:0.5rem; border:1px solid var(--border); }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <div class="nav-links">
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="buyer-home.html">Shop</a>
+       <a class="nav-link" href="my-orders.html">My Orders</a>
+      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+    </div>
+  </nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>›</span>
+  <a href="buyer-home.html">Shop</a><span>›</span>
+  <strong>Cart & Checkout</strong>
+</div>
+
+<div style="background:#fff;border-bottom:1px solid var(--border);padding:1rem 2rem">
+  <div class="steps" style="max-width:600px">
+    <div class="step-item"><div class="step-circle active" id="sc1">1</div><div class="step-label active" id="sl1">Cart</div></div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-item"><div class="step-circle pending" id="sc2">2</div><div class="step-label pending" id="sl2">Billing</div></div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-item"><div class="step-circle pending" id="sc3">3</div><div class="step-label pending" id="sl3">Confirmation</div></div>
+  </div>
+</div>
+
+<div id="step1">
+  <div class="checkout-layout">
+    <div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:1.5rem">Your Cart</h2>
+      <div id="cart-items-list"></div>
+      <div id="cart-empty" class="hidden" style="text-align:center; padding:3rem;">
+        <h3>Your cart is empty</h3>
+        <a href="buyer-home.html" class="btn btn-primary">Browse Products</a>
+      </div>
+    </div>
+    <div class="order-summary">
+      <div class="summary-row"><span>Subtotal</span><span class="amt" id="subtotal">₹0</span></div>
+      <div class="summary-row"><span>Delivery Fee</span><span class="amt" id="delivery-fee-display">₹0</span></div>
+      <div class="summary-row"><span>Platform Fee (5%)</span><span class="amt" id="platform-fee-display">₹0</span></div>
+      <div class="summary-row total"><span>Total</span><span class="amt" id="total-display">₹0</span></div>
+      <button class="btn btn-primary btn-full" style="margin-top:1.2rem" onclick="goToBilling()" id="checkout-btn">Proceed to Billing →</button>
+    </div>
+  </div>
+</div>
+
+<div id="step2" class="hidden">
+  <div class="checkout-layout">
+    <div class="billing-form">
+      <h3>📦 Delivery Address</h3>
+      <div class="form-group"><label>First Name</label><input id="f-fname" placeholder="Enter Name" required></div>
+      <div class="form-group"><label>Phone Number</label><input id="f-phone" type="tel" placeholder="10-digit number" required></div>
+      <div class="form-group"><label>Email</label><input id="f-email" type="email" placeholder="email@example.com" required></div>
+      <div class="form-group"><label>PIN Code</label><input id="f-pin" type="number" placeholder="6-digit PIN" required></div>
+      <div class="form-group"><label>Street Address</label><input id="f-addr" placeholder="Address"></div>
+      
+      <div class="form-group">
+        <label>Delivery Instructions</label>
+        <input id="f-instructions" placeholder="e.g. Leave at front gate">
+      </div>
+      
+      <button class="btn btn-primary btn-full" onclick="placeOrder()" style="margin-top:1rem">✓ Place Order</button>
+    </div>
+
+    <div class="order-summary">
+  <h3>Order Summary</h3>
+  <div class="summary-row"><span>Subtotal</span><span id="billing-subtotal">₹0</span></div>
+  
+  <div class="summary-row"><span>Delivery Fee</span><span id="billing-delivery">₹0</span></div>
+  <div class="summary-row"><span>Platform Fee (5%)</span><span id="billing-platform">₹0</span></div>
+  
+  <div class="summary-row total"><span>Total</span><span id="billing-total">₹0</span></div>
+</div>
+  </div>
+</div>
+
+<div id="step3" class="hidden">
+  <div style="text-align:center; padding:4rem;">
+    <h2>🎉 Order Placed!</h2>
+    <p>Please show this QR code to the artisan or delivery partner for verification:</p>
+    
+    <div id="artisan-qr-container" style="margin:2rem auto; width:200px; height:200px; padding:10px; background:#fff; border:1px solid var(--border); border-radius:12px; display:flex; align-items:center; justify-content:center;">
+       </div>
+
+    <div class="order-id-box" style="margin-bottom:2rem;">
+      <span style="color:var(--muted); font-size:0.9rem;">Order ID:</span><br>
+      <div class="order-val" id="confirm-order-id" style="font-weight:bold; font-size:1.4rem;"></div>
+    </div>
+
+    <a href="buyer-home.html" class="btn btn-primary">Continue Shopping</a>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+// 1. Render Cart Items with Dynamic Data Support
+function renderCartItems() {
+  const list = document.getElementById('cart-items-list');
+  const empty = document.getElementById('cart-empty');
+  
+  if (Store.count() === 0) {
+    list.innerHTML = ''; 
+    empty.classList.remove('hidden'); 
+    return;
+  }
+  
+  empty.classList.add('hidden');
+  
+  // Use ALL_PRODUCTS to support items added by sellers
+  list.innerHTML = Store.cart.map((id, idx) => {
+    const p = ALL_PRODUCTS.find(x => x.id === id);
+    return p ? `
+      <div class="cart-item">
+        <img src="${p.image}" width="60" height="60" style="object-fit:cover; border-radius:8px">
+        <div class="cart-info">
+          <div class="cart-name">${p.name}</div>
+          <div class="cart-artisan">by ${p.artisan || 'Handcrafted Tradition'}</div>
+          <div class="cart-price">${fmt(p.price)}</div>
+        </div>
+        <button class="cart-remove" onclick="removeItem(${idx})">✕</button>
+      </div>` : '';
+  }).join('');
+  
+  calculateSummary();
+}
+
+// 2. Standardized Fee Calculation
+function calculateSummary() {
+  // Use the unified getFullSummary from shared.js for consistent pricing
+  const summary = Store.getFullSummary();
+  
+  document.getElementById('subtotal').textContent = fmt(summary.subtotal);
+  document.getElementById('delivery-fee-display').textContent = fmt(summary.deliveryFee);
+  document.getElementById('platform-fee-display').textContent = fmt(summary.platformFee);
+  document.getElementById('total-display').textContent = fmt(summary.total);
+}
+
+// 3. Step Navigation
+function showStep(n) {
+  [1, 2, 3].forEach(i => {
+    const panel = document.getElementById('step' + i);
+    if (panel) panel.classList.toggle('hidden', i !== n);
+    
+    const sc = document.getElementById('sc' + i);
+    const sl = document.getElementById('sl' + i);
+    
+    if (i < n) { 
+      sc.className = 'step-circle done'; 
+      sl.className = 'step-label done'; 
+      sc.textContent = '✓'; 
+    } else if (i === n) { 
+      sc.className = 'step-circle active'; 
+      sl.className = 'step-label active'; 
+      sc.textContent = i; 
+    } else { 
+      sc.className = 'step-circle pending'; 
+      sl.className = 'step-label pending'; 
+      sc.textContent = i; 
+    }
+  });
+  window.scrollTo(0, 0);
+}
+
+function goToBilling() {
+  if (Store.count() === 0) return;
+  showStep(2);
+  
+  // Use the unified getFullSummary from shared.js
+  const summary = Store.getFullSummary();
+  
+  // Update all display elements in the Billing summary
+  document.getElementById('billing-subtotal').textContent = fmt(summary.subtotal);
+  document.getElementById('billing-delivery').textContent = fmt(summary.deliveryFee);
+  document.getElementById('billing-platform').textContent = fmt(summary.platformFee);
+  document.getElementById('billing-total').textContent = fmt(summary.total);
+}
+
+function placeOrder() {
+  const fname = document.getElementById('f-fname').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const pin = document.getElementById('f-pin').value.toString().trim();
+  const addr = document.getElementById('f-addr').value.trim();
+  
+  // 1. FORCE GET THE EMAIL FROM LOGIN DATA
+  const email = localStorage.getItem("user_email") || document.getElementById('f-email').value.trim();
+
+  if (!fname || !/^\d{10}$/.test(phone) || !email || !/^\d{6}$/.test(pin)) {
+    return alert("Please enter all details correctly.");
+  }
+
+  const orderId = 'ORD-' + Math.floor(100000 + Math.random() * 900000);
+  const existingOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+
+  Store.cart.forEach(pid => {
+    const p = ALL_PRODUCTS.find(x => x.id === pid);
+    if (p) {
+      existingOrders.push({
+        id: orderId,
+        productId: p.id,
+        productName: p.name,
+        qty: 1, 
+        buyer: fname,
+        buyerEmail: email, // 2. THIS SAVES THE LOGIN EMAIL
+        buyerPhone: phone,
+        buyerAddr: `${addr}, PIN: ${pin}`,
+        date: new Date().toLocaleDateString(),
+        status: 'pending',
+        artisan: p.artisan,
+        deliveryCode: Math.floor(1000 + Math.random() * 9000)
+      });
+    }
+  });
+
+  localStorage.setItem('all_orders', JSON.stringify(existingOrders));
+  
+  // Clean up UI and move to confirmation
+  Store.clear(); 
+  showStep(3);
+  document.getElementById('confirm-order-id').textContent = orderId;
+}
+
+// Inside your placeOrder() function in cart.html
+const firstProdId = Store.cart[0];
+const firstP = ALL_PRODUCTS.find(x => x.id === firstProdId);
+
+if (firstP) {
+    // Encode the product name and image URL into the QR
+    const qrData = JSON.stringify({
+        id: firstP.id,
+        name: firstP.name,
+        image: firstP.image // This is the critical change
+    });
+    
+    // Update the container to show the QR
+    document.getElementById('artisan-qr-container').innerHTML = `
+      <img src="${genQR(qrData)}" width="160" style="border:1px solid var(--border); border-radius:8px">
+    `;
+}
+
+function removeItem(idx) { 
+  Store.remove(idx); 
+  renderCartItems(); 
+}
+
+// Initial Launch
+renderCartItems();
+</script>
+</body>
+</html>

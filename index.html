@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vocal for Local — Visakhapatnam Artisan Marketplace</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    /* ── PORTAL STYLING ── */
+    .hero {
+  min-height: 100vh;
+  /* Add an authentic Indian art background image here */
+  background-image: linear-gradient(rgba(28, 10, 0, 0.85), rgba(28, 10, 0, 0.85)), 
+                    url('https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Parallax effect for a premium feel */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add a subtle texture overlay */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 18% 65%, rgba(232, 135, 42, 0.22) 0%, transparent 52%),
+        radial-gradient(ellipse at 82% 18%, rgba(193, 68, 14, 0.14) 0%, transparent 48%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      max-width: 500px; /* Narrower for the login card */
+      width: 100%;
+    }
+
+    /* Unified Login Card */
+    .login-card {
+  background: rgba(45, 25, 10, 0.4); /* Semi-transparent dark brown */
+  border: 1px solid rgba(212, 160, 23, 0.2); /* Saffron-gold border */
+  backdrop-filter: blur(15px); /* Frosty glass effect */
+  padding: 3rem 2rem;
+  border-radius: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  animation: fadeUp 0.8s ease both;
+}
+
+    .role-tabs {
+      display: flex;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px;
+      border-radius: 12px;
+      margin-bottom: 2.5rem;
+      gap: 5px;
+    }
+
+    .role-btn {
+      flex: 1;
+      border: none;
+      background: none;
+      padding: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .role-btn.active {
+      background: var(--saffron);
+      color: white;
+      box-shadow: 0 4px 15px rgba(232, 135, 42, 0.4);
+    }
+
+    .login-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .login-sub {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Standard Hero Typography */
+    .hero-badge {
+      color: var(--gold);
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span { color: var(--saffron); }
+
+    .btn-main {
+      width: 100%;
+      background: var(--saffron);
+      color: #fff;
+      border: none;
+      padding: 1rem;
+      border-radius: 0.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-main:hover {
+      background: var(--deep-org);
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">✦ Visakhapatnam Artisan Marketplace ✦</div>
+      <h1>Vocal<span> for Local</span></h1>
+
+      <div class="login-card">
+        <div class="role-tabs">
+          <button class="role-btn active" onclick="updatePortal('buyer', this)">Buyer</button>
+          <button class="role-btn" onclick="updatePortal('seller', this)">Artisan</button>
+          <button class="role-btn" onclick="updatePortal('shipper', this)">Shipper</button>
+        </div>
+
+        <h2 class="login-heading" id="portal-title">Buyer Login</h2>
+        <p class="login-sub" id="portal-desc">Access authentic heritage products directly.</p>
+
+        <button class="btn-main" onclick="redirectToLogin()">
+          Continue to Login →
+        </button>
+
+        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5);">
+          New here? <a href="buyer-register.html" id="signup-link" style="color:var(--saffron); text-decoration: none; font-weight: 700;">Create an Account</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-strip" style="background:var(--ink); border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="stat-item"><div class="stat-num">200+</div><div class="stat-lbl">Artisans</div></div>
+    <div class="stat-item"><div class="stat-num">0</div><div class="stat-lbl">Middlemen</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Authentic</div></div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    let currentRole = 'buyer';
+
+    function updatePortal(role, btn) {
+      currentRole = role;
+      
+      // Update Tab UI
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Update Card Content
+      const title = document.getElementById('portal-title');
+      const desc = document.getElementById('portal-desc');
+      const signup = document.getElementById('signup-link');
+
+      if (role === 'buyer') {
+        title.textContent = "Buyer Login";
+        desc.textContent = "Access authentic heritage products directly.";
+        signup.href = "buyer-register.html";
+      } else if (role === 'seller') {
+        title.textContent = "Artisan Login";
+        desc.textContent = "Manage your shop and list new creations.";
+        signup.href = "seller-register.html";
+      } else {
+        title.textContent = "Shipper Login";
+        desc.textContent = "Coordinate local heritage deliveries.";
+        signup.href = "shipper-register.html";
+      }
+    }
+
+    function redirectToLogin() {
+      // Redirect based on selected role
+      window.location.href = `${currentRole}-login.html`;
+    }
+  </script>
+</body>
+</html>

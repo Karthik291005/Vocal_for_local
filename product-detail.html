@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details — Vocal for Local</title>
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .detail-container { max-width: 1200px; margin: 2rem auto; padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .product-gallery img { width: 100%; border-radius: 1rem; border: 1px solid var(--border); }
+        .badge-artisan { background: #E8872A; color: white; padding: 0.3rem 0.8rem; border-radius: 2rem; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; margin-bottom: 1rem; display: inline-block; }
+        .price { font-size: 2rem; color: #C1440E; font-weight: 900; margin: 1.5rem 0; }
+        .tabs { display: flex; gap: 2rem; border-bottom: 1px solid var(--border); margin-top: 2rem; }
+        .tab { padding: 0.8rem 0; cursor: pointer; color: #9B7355; border-bottom: 2px solid transparent; font-weight: 600; }
+        .tab.active { color: #1C0A00; border-color: #E8872A; }
+        .tab-content { padding: 1.5rem 0; line-height: 1.6; min-height: 150px; }
+        .qr-section { background: #FDF6EB; padding: 1.5rem; border-radius: 1rem; border: 1px dashed #E8D5B0; margin-top: 2rem; display: flex; align-items: center; gap: 1.5rem; }
+        .qr-section img { width: 120px; height: 120px; background: #fff; padding: 5px; border-radius: 8px; border: 1px solid #E8D5B0; }
+        .stock-tag { color: #C1440E; font-size: 0.85rem; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+        <div class="nav-links">
+            <a class="nav-link" href="buyer-home.html">Shop</a>
+            <a class="nav-link" href="my-orders.html">My Orders</a>
+            <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <div class="detail-container">
+        <div class="product-gallery">
+            <span class="badge-artisan">Artisan Made</span>
+            <img id="p-image" src="" alt="Product Image">
+        </div>
+
+        <div class="product-info">
+            <h1 id="p-name" style="font-family:'Playfair Display',serif; font-size: 2.5rem;">Loading...</h1>
+            <p id="p-artisan" style="color:#9B7355;">by Loading...</p>
+            <p class="stock-tag" id="p-stock"></p>
+            
+            <div class="price" id="p-price">₹0</div>
+
+            <button class="btn btn-primary" style="width:100%; padding:1rem;" onclick="addToCart()">Add to Cart</button>
+
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('desc', this)">Description</div>
+                <div class="tab" onclick="switchTab('story', this)">Story</div>
+                <div class="tab" onclick="switchTab('specs', this)">Specifications</div>
+            </div>
+            <div id="tab-content" class="tab-content">
+                No description available for this handcrafted item.
+            </div>
+
+            <div class="qr-section">
+                <div id="qr-container"></div>
+                <div>
+                    <h4 style="margin-bottom: 0.3rem;">🔒 Authenticity Certificate</h4>
+                    <p style="font-size: 0.8rem; color: #9B7355;">Scan to verify the artisan's identity, village of origin, and craft heritage.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script>
+        // 1. STATIC DATA (Your Local "Database")
+        const STATIC_PRODUCTS = [
+            {
+                id: 'p1',
+                name: 'Etikoppaka Wooden Rattle',
+                artisan: 'Ramaiah Crafts',
+                price: 350,
+                image: 'images/rattle.jpg',
+                stock: 11,
+                village: 'Etikoppaka',
+                description: 'A traditional wooden rattle made with natural dyes and lacquer.',
+                story: 'Crafted by Ramaiah, a 4th generation artisan who preserves the Etikoppaka lacquer art form.',
+                specs: 'Material: Ankudu Wood | Color: Natural Seeds | Weight: 200g'
+            }
+        ];
+
+        let currentProduct = null;
+
+        // 2. LOAD PRODUCT DATA
+        function loadStaticProduct() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id') || 'p1'; // Default to p1 if no ID in URL
+            
+            currentProduct = STATIC_PRODUCTS.find(p => p.id === productId);
+
+            if (currentProduct) {
+                document.getElementById('p-name').textContent = currentProduct.name;
+                document.getElementById('p-price').textContent = `₹${currentProduct.price}`;
+                document.getElementById('p-artisan').textContent = `by ${currentProduct.artisan}`;
+                document.getElementById('p-image').src = currentProduct.image;
+                document.getElementById('p-stock').textContent = `Only ${currentProduct.stock} items currently in stock`;
+                document.getElementById('tab-content').textContent = currentProduct.description;
+
+                // 3. GENERATE AUTHENTICITY QR
+                const qrData = JSON.stringify({
+                    artisan: currentProduct.artisan,
+                    village: currentProduct.village,
+                    heritage: "Certified GI Tagged"
+                });
+                
+                // Assuming genQR is in your shared.js
+                if (typeof genQR === 'function') {
+                    document.getElementById('qr-container').innerHTML = `<img src="${genQR(qrData)}" alt="QR Code">`;
+                }
+            }
+        }
+
+        function switchTab(type, el) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            
+            const content = document.getElementById('tab-content');
+            if (type === 'story') content.textContent = currentProduct.story;
+            else if (type === 'specs') content.textContent = currentProduct.specs;
+            else content.textContent = currentProduct.description;
+        }
+
+        function addToCart() {
+            if (currentProduct && typeof Store !== 'undefined') {
+                Store.add(currentProduct.id); // Using your shared Store logic
+                alert("Added to cart!");
+            }
+        }
+
+        window.onload = loadStaticProduct;
+    </script>
+</body>
+</html>

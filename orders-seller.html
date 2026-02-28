@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Seller Dashboard — Vocal for Local</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .seller-nav { position: sticky; top: 0; z-index: 500; background: rgba(14, 28, 8, 0.98); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139, 196, 74, 0.2); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 62px; }
+    .seller-nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.15rem; color: #fff; text-decoration: none; }
+    .seller-nav-logo em { color: var(--green); font-style: normal; }
+    .snav-right { display: flex; align-items: center; gap: 0.25rem; }
+    .snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+    .snav-btn:hover, .snav-btn.active { color: var(--green); }
+    .snav-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 900; color: var(--ink); margin: 0 0.3rem; }
+    .seller-hero { background: linear-gradient(135deg, #0E1C08, #1A3010); padding: 2rem 2.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .seller-hero h2 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.5rem; margin-bottom: 0.2rem; }
+    .seller-hero p { color: rgba(255, 255, 255, 0.45); font-size: 0.85rem; }
+    .seller-stats { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .s-stat { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.09); padding: 0.85rem 1.3rem; border-radius: 0.5rem; text-align: center; min-width: 100px; }
+    .s-stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--green); font-weight: 700; }
+    .s-stat-lbl { font-size: 0.65rem; color: rgba(255, 255, 255, 0.38); text-transform: uppercase; letter-spacing: 0.12em; }
+    .seller-body { max-width: 1250px; margin: 0 auto; padding: 2rem; }
+    .dash-card { background: #fff; border: 1px solid #D8EFC9; border-radius: 0.8rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .dash-card-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--ink); margin-bottom: 1.2rem; padding-bottom: 0.6rem; border-bottom: 1px solid #D8EFC9; display: flex; align-items: center; gap: 0.5rem; }
+    .inv-table, .ord-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+    .inv-table th, .ord-table th { text-align: left; padding: 0.65rem 0.85rem; background: #0E1C08; color: rgba(255, 255, 255, 0.82); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; }
+    .inv-table td, .ord-table td { padding: 0.7rem 0.85rem; border-bottom: 1px solid #E8F2DA; vertical-align: middle; }
+    .stock-ctrl { display: flex; align-items: center; gap: 0.5rem; }
+    .sctrl-btn { background: #0E1C08; color: #fff; border: none; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .sctrl-btn:hover { background: var(--green); }
+    .sctrl-num { min-width: 2.2rem; text-align: center; font-weight: 700; }
+    .pkg-box { background: linear-gradient(135deg, #F0FBE8, #E4F5D0); border: 1.5px solid #9CC56A; border-radius: 0.7rem; padding: 1.4rem 1.6rem; margin-top: 1rem; }
+    .hidden { display: none; }
+    .eco-bar { background: #E4F5D0; border: 1px solid #9CC56A; border-radius: 0.4rem; padding: 0.55rem 0.9rem; margin-top: 0.7rem; }
+    .eco-fill { height: 7px; background: linear-gradient(90deg, #4A8A1A, var(--green)); border-radius: 3px; transition: width 0.8s ease; }
+  </style>
+</head>
+<body>
+
+  <nav class="seller-nav">
+    <a href="index.html" class="seller-nav-logo">Vocal <em>for Local</em> <span style="font-size:0.65rem;color:rgba(255,255,255,0.28);margin-left:0.4rem">Artisan Panel</span></a>
+    <div class="snav-right">
+      <button class="snav-btn active" id="stab-inv" onclick="showTab('inv')">📦 Inventory</button>
+      <button class="snav-btn" id="stab-ord" onclick="showTab('ord')">📋 Orders</button>
+      <button class="snav-btn" id="stab-add" onclick="showTab('add')">➕ Add Product</button>
+      <div class="snav-avatar" id="snav-init">A</div>
+      <span style="color:rgba(255,255,255,0.55);font-size:0.82rem" id="snav-name">Artisan</span>
+      <button class="snav-btn" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="seller-hero">
+    <div>
+      <h2 id="hero-greeting">Welcome, Artisan 🏺</h2>
+      <p id="hero-sub">Handicrafts · Visakhapatnam, AP</p>
+    </div>
+    <div class="seller-stats">
+      <div class="s-stat"><div class="s-stat-num" id="stat-live">0</div><div class="s-stat-lbl">Live Products</div></div>
+      <div class="s-stat"><div class="s-stat-num" id="stat-orders">0</div><div class="s-stat-lbl">Orders</div></div>
+      <div class="s-stat"><div class="s-stat-num" id="stat-val">₹0</div><div class="s-stat-lbl">Inventory Value</div></div>
+      <div class="s-stat"><div class="s-stat-num">₹0</div><div class="s-stat-lbl">Commission Saved</div></div>
+    </div>
+  </div>
+
+  <div class="seller-body">
+    <div id="tab-inv">
+      <div class="dash-card">
+        <div class="dash-card-title">📦 Product Inventory</div>
+        <div style="overflow-x:auto">
+          <table class="inv-table">
+            <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th><th>QR</th></tr></thead>
+            <tbody id="inv-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-ord" class="hidden">
+      <div class="dash-card">
+        <div class="dash-card-title">📋 Orders Dashboard</div>
+        <div style="overflow-x:auto">
+          <table class="ord-table">
+            <thead><tr><th>Order ID</th><th>Product</th><th>Qty</th><th>Buyer</th><th>Status</th><th>Packaging</th></tr></thead>
+            <tbody id="ord-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="pkg-panel"></div>
+    </div>
+
+    <div id="tab-add" class="hidden">
+      <div class="dash-card">
+        <div class="dash-card-title">➕ Add New Product</div>
+        <div class="form-group"><label>Product Name *</label><input id="np-name" placeholder="e.g. Wooden Top" /></div>
+        <div class="form-group"><label>Category *</label><select id="np-cat"></select></div>
+        <div class="form-2col">
+          <div class="form-group"><label>Price (₹) *</label><input type="number" id="np-price" /></div>
+          <div class="form-group"><label>Initial Stock *</label><input type="number" id="np-stock" value="10" /></div>
+        </div>
+        <button class="btn btn-forest" style="margin-top:1rem" onclick="addProduct()">+ Add Product</button>
+      </div>
+    </div>
+  </div>
+
+<script src="shared.js"></script>
+<script>
+  // 1. Load seller session
+  const sellerData = JSON.parse(sessionStorage.getItem('vfl_seller') || '{"name":"Ramaiah","city":"Visakhapatnam","state":"AP","craft":"etikoppaka"}');
+  document.getElementById('snav-init').textContent = sellerData.name?.[0]?.toUpperCase() || 'R';
+  document.getElementById('snav-name').textContent = sellerData.name || 'Artisan';
+  document.getElementById('hero-greeting').textContent = `Welcome, ${sellerData.name} 🏺`;
+
+  // 2. MODIFIED: Inventory State Management to show ALL products
+  // This removes the specific name filter so you see all 40+ products at once
+  let inventory = JSON.parse(localStorage.getItem("sellerInventory")) || ALL_PRODUCTS;
+  
+  let expandedPkg = null;
+
+function updateStats() {
+    // 1. Live Products
+    const liveCount = inventory.filter(p => p.stock > 0).length;
+    document.getElementById('stat-live').textContent = liveCount;
+    
+    // 2. Orders to Deliver (Excludes 'Delivered' status)
+    const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+    const pendingCount = allOrders.filter(o => 
+        (o.artisan === sellerData.name || o.artisan === "Ramaiah Crafts") && 
+        o.status !== 'Delivered'
+    ).length;
+
+    const orderStatBox = document.querySelector('.s-stat:nth-child(2) .s-stat-num');
+    if(orderStatBox) orderStatBox.textContent = pendingCount;
+
+    // 3. Inventory Value
+    const val = inventory.reduce((total, p) => total + (p.price * (p.stock || 0)), 0);
+    document.getElementById('stat-val').textContent = fmt(val);
+}
+function renderInventory() {
+  document.getElementById('inv-tbody').innerHTML = inventory.map(p => `
+    <tr>
+      <td><strong>${p.name}</strong></td>
+      <td>${CATEGORIES.find(c => c.id === p.category)?.label || p.category}</td>
+      <td>${fmt(p.price)}</td>
+      <td>
+        <div class="stock-ctrl">
+          <input type="number" 
+                 class="sctrl-num" 
+                 value="${p.stock || 0}" 
+                 min="0"
+                 style="width: 70px; text-align: center; padding: 0.4rem; border: 1.5px solid var(--border); border-radius: 0.4rem; font-family: 'DM Sans', sans-serif; font-weight: 700;"
+                 onchange="updateStockDirectly(${p.id}, this.value)">
+        </div>
+      </td>
+      <td><button class="btn btn-outline btn-sm" style="color:var(--terra); border-color:var(--terra);" onclick="deleteProduct(${p.id})">🗑 Delete</button></td>
+      <td><img src="${genQR(p.id)}" width="40" height="40" style="cursor:pointer" onclick="showQRModal(${p.id})" /></td>
+    </tr>`).join('');
+  updateStats();
+}
+
+  function adjStock(id, d) {
+    const p = inventory.find(x => x.id === id);
+    if (p) {
+      p.stock = Math.max(0, (p.stock || 0) + d);
+      localStorage.setItem("sellerInventory", JSON.stringify(inventory));
+      // Sync stock update to the marketplace buyers see
+      let market = JSON.parse(localStorage.getItem("marketProducts") || "[]");
+      let mItem = market.find(x => x.id === id);
+      if (mItem) { 
+        mItem.stock = p.stock; 
+        localStorage.setItem("marketProducts", JSON.stringify(market)); 
+      }
+    }
+    renderInventory();
+  }
+
+  function deleteProduct(id) {
+    if (confirm("Remove product from your dashboard?")) {
+      inventory = inventory.filter(p => p.id !== id);
+      localStorage.setItem("sellerInventory", JSON.stringify(inventory));
+      // Also remove from global marketplace
+      let market = JSON.parse(localStorage.getItem("marketProducts") || "[]");
+      localStorage.setItem("marketProducts", JSON.stringify(market.filter(p => p.id !== id)));
+      renderInventory();
+    }
+  }
+
+function updateStockDirectly(id, newValue) {
+  const p = inventory.find(x => x.id === id);
+  const val = Math.max(0, parseInt(newValue) || 0); // Prevent negative numbers
+
+  if (p) {
+    p.stock = val;
+    
+    // 1. Save to seller inventory
+    localStorage.setItem("sellerInventory", JSON.stringify(inventory));
+    
+    // 2. Sync with global marketplace
+    let market = JSON.parse(localStorage.getItem("marketProducts") || "[]");
+    let mItem = market.find(x => x.id === id);
+    if (mItem) {
+      mItem.stock = p.stock;
+      localStorage.setItem("marketProducts", JSON.stringify(market));
+    }
+  }
+  updateStats(); // Refresh the counts at the top
+}
+
+function renderOrders() {
+    const allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+    // Filter out 'Delivered' orders so they disappear from the dashboard
+    const myActiveOrders = allOrders.filter(o => 
+        (o.artisan === sellerData.name || o.artisan === "Ramaiah Crafts") && 
+        o.status !== 'Delivered'
+    );
+
+    const container = document.getElementById('ord-tbody');
+    if (myActiveOrders.length === 0) {
+        container.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;">All orders delivered! No pending tasks.</td></tr>';
+        return;
+    }
+
+    container.innerHTML = myActiveOrders.map(o => `
+        <tr>
+            <td><strong>${o.id}</strong></td>
+            <td>${o.productName}</td>
+            <td>${o.qty}</td>
+            <td>${o.buyer}</td>
+            <td>${o.date}</td>
+            <td><span class="status status-${o.status}">${o.status}</span></td>
+            <td><button class="btn btn-forest btn-sm" onclick="togglePkg('${o.id}')">View</button></td>
+        </tr>`).join('');
+
+    const pkgPanel = document.getElementById('pkg-panel');
+    if (expandedPkg) {
+      const o = allOrders.find(x => x.id === expandedPkg);
+      pkgPanel.innerHTML = `
+        <div class="dash-card">
+          <div class="dash-card-title">♻️ Dispatch Details for ${o.id}</div>
+          <div class="pkg-box">
+            <p><strong>Address:</strong> ${o.buyerAddr}</p>
+            <p><strong>Email:</strong> ${o.buyerEmail || 'N/A'}</p>
+            <p><strong>Instructions:</strong> ${o.deliveryInstructions || 'None'}</p>
+            <div class="eco-bar"><div class="eco-fill" style="width:100%"></div></div>
+            ${o.status === 'pending' ? `<button class="btn btn-forest btn-full" style="margin-top:1rem" onclick="dispatchOrder('${o.id}', ${o.productId})">🚀 Dispatch & Reduce Stock</button>` : ''}
+          </div>
+        </div>`;
+    } else pkgPanel.innerHTML = '';
+  }
+
+  function dispatchOrder(orderId, productId) {
+  if (!confirm("Confirm dispatch? This will reduce inventory stock by 1 and notify the shipper.")) return;
+
+  let allOrders = JSON.parse(localStorage.getItem('all_orders') || '[]');
+  const orderIndex = allOrders.findIndex(o => o.id === orderId && o.productId === productId);
+  
+  if (orderIndex > -1) {
+    // 1. Update status to 'shipped' so shipper can see it
+    allOrders[orderIndex].status = 'shipped'; 
+    localStorage.setItem('all_orders', JSON.stringify(allOrders));
+    
+    // 2. Reduce Stock logic (as implemented previously)
+    adjStock(productId, -1);
+    
+    alert("Dispatched! Order sent to Delivery Partner.");
+    renderOrders();
+  }
+}
+
+  function addProduct() {
+    const name = document.getElementById('np-name').value;
+    const price = Number(document.getElementById('np-price').value);
+    const stock = Number(document.getElementById('np-stock').value);
+    if (!name || !price) return alert("Please enter name and price.");
+    
+    const newP = { 
+      id: Date.now(), 
+      name, 
+      category: document.getElementById('np-cat').value, 
+      price, 
+      stock, 
+      artisan: sellerData.name, 
+      image: "https://via.placeholder.com/400" 
+    };
+    
+    inventory.push(newP);
+    localStorage.setItem("sellerInventory", JSON.stringify(inventory));
+    
+    let mkt = JSON.parse(localStorage.getItem("marketProducts") || "[]");
+    mkt.push(newP);
+    localStorage.setItem("marketProducts", JSON.stringify(mkt));
+    
+    alert("Success! Product added.");
+    location.reload();
+  }
+
+  function togglePkg(id) { expandedPkg = expandedPkg === id ? null : id; renderOrders(); }
+  function showTab(t) {
+    ["inv", "ord", "add"].forEach(x => { 
+      document.getElementById("tab-"+x).classList.toggle("hidden", x!==t); 
+      document.getElementById("stab-"+x).classList.toggle("active", x===t); 
+    });
+    if (t === "inv") renderInventory(); 
+    if (t === "ord") renderOrders();
+  }
+
+  // Initialize Categories
+  const npCat = document.getElementById('np-cat');
+  CATEGORIES.forEach(c => npCat.innerHTML += `<option value="${c.id}">${c.emoji} ${c.label}</option>`);
+  showTab("inv");
+</script>
+</body>
+</html>

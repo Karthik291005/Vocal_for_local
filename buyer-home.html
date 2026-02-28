@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shop — Vocal for Local</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── SCROLLING BANNER ── */
+.banner-track {
+  background: var(--ink); overflow:hidden; border-bottom:1px solid rgba(212,160,23,0.15);
+  padding:0.5rem 0;
+}
+.banner-inner { display:flex; gap:0; animation:scroll 28s linear infinite; white-space:nowrap; }
+.banner-item { display:inline-flex; align-items:center; gap:0.5rem; padding:0 2.5rem; font-size:0.72rem; color:rgba(253,246,235,0.55); letter-spacing:0.1em; text-transform:uppercase; }
+.banner-dot { color:var(--gold); }
+@keyframes scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+/* ── HERO SLIDER ── */
+.hero-slider {
+  background:linear-gradient(135deg,#1A0A00 0%,#3D1500 55%,#1A0A00 100%);
+  padding:4.5rem 2rem; text-align:center; position:relative; overflow:hidden;
+}
+.hero-slider::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 28% 55%,rgba(232,135,42,0.2) 0%,transparent 52%); }
+.hero-wm { position:absolute; bottom:-2rem; left:50%; transform:translateX(-50%); font-family:'Playfair Display',serif; font-size:10rem; font-weight:900; color:rgba(255,255,255,0.025); white-space:nowrap; pointer-events:none; }
+.hero-rel { position:relative; z-index:1; }
+.hero-eyebrow { display:inline-block; background:rgba(212,160,23,0.13); border:1px solid rgba(212,160,23,0.3); color:var(--gold); font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; padding:0.35rem 1rem; border-radius:2rem; margin-bottom:1.4rem; }
+.hero-title { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,6vw,4rem); color:var(--cream); line-height:1.12; margin-bottom:0.7rem; }
+.hero-title em { color:var(--saffron); font-style:normal; }
+.hero-sub { color:rgba(253,246,235,0.5); font-size:0.98rem; font-weight:300; margin-bottom:2rem; }
+.hero-stats { display:flex; gap:2.5rem; justify-content:center; flex-wrap:wrap; }
+.hero-stat-num { font-family:'Playfair Display',serif; font-size:1.9rem; font-weight:900; color:var(--saffron); }
+.hero-stat-lbl { font-size:0.68rem; color:rgba(253,246,235,0.45); letter-spacing:0.12em; text-transform:uppercase; }
+
+/* ── CATEGORY SCROLL ── */
+.cat-scroll { display:flex; gap:0.85rem; overflow-x:auto; padding:1.5rem 2rem; scrollbar-width:none; }
+.cat-scroll::-webkit-scrollbar { display:none; }
+.cat-pill {
+  flex-shrink:0; background:var(--card); border:1.5px solid var(--border);
+  border-radius:3rem; padding:0.55rem 1.2rem; cursor:pointer;
+  display:flex; align-items:center; gap:0.55rem; font-size:0.82rem;
+  color:var(--ink); transition:all 0.2s; font-weight:500; white-space:nowrap;
+}
+.cat-pill:hover, .cat-pill.active { background:var(--saffron); color:#fff; border-color:var(--saffron); }
+
+/* ── PRODUCTS ── */
+.products-header { display:flex; align-items:center; justify-content:space-between; padding:0 2rem; margin:1.5rem 0 1rem; }
+.products-title { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--ink); }
+.products-count { font-size:0.82rem; color:var(--muted); }
+.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.5rem; padding:0 2rem 3rem; max-width:1300px; margin:0 auto; }
+
+/* ── SEARCH ── */
+.search-bar { padding:1rem 2rem 0; max-width:500px; }
+.search-input-wrap { position:relative; }
+.search-input-wrap input { width:100%; border:1.5px solid var(--border); border-radius:2rem; padding:0.65rem 1rem 0.65rem 2.8rem; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s; background:var(--card); }
+.search-input-wrap input:focus { border-color:var(--saffron); }
+.search-icon { position:absolute; left:1rem; top:50%; transform:translateY(-50%); color:var(--muted); }
+    .snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+    .snav-btn:hover, .snav-btn.active { color: var(--green); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <div class="nav-links">
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="buyer-home.html">Shop</a>
+       <a class="nav-link" href="my-orders.html">My Orders</a>
+      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+    </div>
+</nav>
+
+<div class="banner-track">
+  <div class="banner-inner" id="banner"></div>
+</div>
+
+<div class="hero-slider">
+  <div class="hero-wm">VOCAL FOR LOCAL</div>
+  <div class="hero-rel">
+    <div class="hero-eyebrow">✦ Support Local Artisans ✦</div>
+    <h1 class="hero-title">Handmade in <em>India</em>,<br>Sold Without a Middleman</h1>
+    <p class="hero-sub">Every purchase goes directly to the artisan's hands</p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">20+</div><div class="hero-stat-lbl">Artisans</div></div>
+      <div><div class="hero-stat-num">8</div><div class="hero-stat-lbl">Craft Types</div></div>
+      <div><div class="hero-stat-num">0</div><div class="hero-stat-lbl">Middlemen</div></div>
+      <div><div class="hero-stat-num">100%</div><div class="hero-stat-lbl">Authentic</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <div class="search-input-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search" placeholder="Search products, artisans, craft types…" oninput="renderProducts()">
+  </div>
+</div>
+
+<div class="cat-scroll" id="cat-scroll"></div>
+
+<div class="products-header">
+  <div class="products-title" id="products-title">Recommended for You</div>
+  <div class="products-count" id="products-count"></div>
+</div>
+<div class="products-grid" id="products-grid"></div>
+<script src="shared.js"></script>
+<script src="shared.js"></script>
+<script>
+function updateCartUI() {
+  const cartBadge = document.getElementById('cart-count');
+  if (cartBadge) cartBadge.textContent = Store.count();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (typeof renderRoleBasedNav === 'function') renderRoleBasedNav();
+  updateCartUI();
+  setupBanner();
+  setupCategoryPills();
+  renderProducts();
+});
+
+function setupBanner() {
+  const bannerMsgs = ['Low cost shipping', 'Zero commission', 'Authentic GI-Tagged Crafts'];
+  const banner = document.getElementById('banner');
+  for (let i = 0; i < 2; i++) {
+    bannerMsgs.forEach(m => banner.innerHTML += `<span class="banner-item"><span class="banner-dot">✦</span>${m}</span>`);
+  }
+}
+
+let activeCategory = 'all';
+function setupCategoryPills() {
+  const scrollContainer = document.getElementById('cat-scroll');
+  scrollContainer.innerHTML = '<div class="cat-pill active" onclick="selectCat(\'all\')">🎪 All Crafts</div>';
+  CATEGORIES.forEach(c => {
+    scrollContainer.innerHTML += `<div class="cat-pill" onclick="selectCat('${c.id}')">${c.emoji} ${c.label}</div>`;
+  });
+}
+
+function selectCat(id) {
+  activeCategory = id;
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.toggle('active', p.innerText.includes(id==='all'?'All':CATEGORIES.find(c=>c.id===id).label)));
+  renderProducts();
+}
+
+function renderProducts() {
+  const q = document.getElementById('search')?.value.toLowerCase() || '';
+  if (typeof ALL_PRODUCTS === 'undefined') return;
+
+  const filtered = ALL_PRODUCTS.filter(p => {
+    const catOk = activeCategory === 'all' || p.category === activeCategory;
+    const searchOk = !q || p.name.toLowerCase().includes(q) || (p.artisan && p.artisan.toLowerCase().includes(q));
+    return catOk && searchOk;
+  });
+
+  document.getElementById('products-count').textContent = filtered.length + ' products';
+  document.getElementById('products-grid').innerHTML = filtered.map(p => `
+    <div class="product-card" onclick="location.href='product.html?id=${p.id}'">
+      <div class="product-card-img">
+        <span class="product-badge">${p.badge || 'New'}</span>
+        <img src="${p.image}" alt="${p.name}" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="product-card-body">
+        <div class="product-name">${p.name}</div>
+        <div class="product-artisan">by ${p.artisan || 'Artisan'}</div>
+        <div class="product-footer">
+          <span class="product-price">${fmt(p.price)}</span>
+          <button class="btn btn-forest btn-sm" onclick="event.stopPropagation(); addToCart(${p.id})">+ Cart</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function addToCart(id) {
+  Store.add(id);
+  updateCartUI();
+  const t = document.createElement('div'); t.className = 'toast'; t.textContent = '✓ Added to cart!';
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2500);
+}
+</script>
+</body>
+</html>

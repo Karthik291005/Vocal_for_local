@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shipper Login — Vocal for Local</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .login-layout {
+      min-height: calc(100vh - 62px);
+      display: grid;
+      grid-template-columns: 380px 1fr;
+    }
+
+    /* LEFT PANEL */
+    .log-left {
+      background: linear-gradient(160deg, #0E1C08, #1A3010, #0E1C08);
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+    }
+
+    .log-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 900;
+      margin-bottom: 2rem;
+    }
+
+    .log-brand em {
+      color: var(--green);
+      font-style: normal;
+    }
+
+    .log-left-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .log-left-sub {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.45);
+      line-height: 1.6;
+    }
+
+    /* RIGHT PANEL */
+    .log-right {
+      background: var(--cream);
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .log-inner {
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .log-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 900;
+      margin-bottom: 0.4rem;
+    }
+
+    .log-subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.78rem;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.7rem;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: var(--green);
+    }
+
+    .login-btn {
+      width: 100%;
+      background: var(--forest);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 1rem;
+      transition: background 0.2s;
+    }
+
+    .login-btn:hover {
+      background: #1f3a10;
+    }
+
+    .reg-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .reg-link a {
+      color: var(--forest);
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+  </nav>
+
+  <div class="login-layout">
+    <div class="log-left">
+      <div class="log-brand">Vocal <em>for Local</em></div>
+      <div class="log-left-title">Welcome Back, Partner 🚚</div>
+      <div class="log-left-sub">
+        Sign in to manage your pickup schedule and deliver heritage crafts across the region.
+      </div>
+    </div>
+
+    <div class="log-right">
+      <div class="log-inner">
+        <div class="log-title">Shipper Login</div>
+        <div class="log-subtitle">Access the Delivery Partner Dashboard</div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="shipper@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+
+        <button class="login-btn" onclick="handleShipperLogin()">
+          Sign In to Dashboard
+        </button>
+
+        <div class="reg-link">
+          New delivery partner? <a href="shipper-register.html">Register here →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleShipperLogin() {
+      const email = document.getElementById('email').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      if (!email || !pass) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      // Enforce your specific credentials
+      if (email === "mohanaddanki25@gmail.com" && pass === "Mr_lover2805") {
+        // Save persistent session data
+        localStorage.setItem("role", "shipper");
+        
+        alert("Login successful!");
+        window.location.href = "shipper-dashboard.html";
+      } else {
+        // Redirect to registration on failure as requested
+        alert("User credentials wrong....");
+        window.location.href = "shipper-login.html";
+      }
+    }
+  </script>
+</body>
+</html>

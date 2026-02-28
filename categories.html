@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Handicraft Categories — Vocal for Local</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.cats-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.8rem; }
+.cat-card {
+  background:var(--card); border:1px solid var(--border); border-radius:1rem;
+  overflow:hidden; cursor:pointer; transition:transform 0.25s,box-shadow 0.25s;
+  text-decoration:none; display:block;
+}
+.cat-card:hover { transform:translateY(-6px); box-shadow:0 20px 50px rgba(26,10,0,0.13); }
+.cat-card-top {
+  padding:2.5rem; display:flex; flex-direction:column; align-items:flex-start;
+  position:relative; overflow:hidden;
+}
+.cat-bg-emoji { position:absolute; right:-0.5rem; bottom:-1rem; font-size:7rem; opacity:0.08; pointer-events:none; }
+.cat-icon { font-size:3.5rem; margin-bottom:1rem; position:relative; z-index:1; }
+.cat-name { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--ink); margin-bottom:0.3rem; position:relative; z-index:1; }
+.cat-origin { font-size:0.76rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.1em; position:relative; z-index:1; margin-bottom:0.6rem; }
+.cat-age-pill { display:inline-block; background:rgba(212,160,23,0.12); border:1px solid rgba(212,160,23,0.3); color:var(--gold); font-size:0.65rem; font-weight:700; letter-spacing:0.1em; padding:0.2rem 0.75rem; border-radius:2rem; position:relative; z-index:1; }
+.cat-desc { padding:0 1.6rem 1.6rem; font-size:0.85rem; color:var(--muted); line-height:1.65; }
+.cat-footer { padding:0.8rem 1.6rem 1.2rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.cat-count { font-size:0.78rem; color:var(--muted); }
+.cat-cta { font-size:0.78rem; font-weight:700; color:var(--saffron); text-transform:uppercase; letter-spacing:0.08em; }
+
+/* Colour per category */
+.cat-card[data-id="etikoppaka"] .cat-card-top { background:linear-gradient(135deg,#FFF8EE,#FDE9CC); }
+.cat-card[data-id="kondapalli"]  .cat-card-top { background:linear-gradient(135deg,#FDF5E6,#FAEACC); }
+.cat-card[data-id="kalamkari"]   .cat-card-top { background:linear-gradient(135deg,#F0F7FF,#E0EDFF); }
+.cat-card[data-id="bamboo"]      .cat-card-top { background:linear-gradient(135deg,#F0FBE8,#E4F5D0); }
+.cat-card[data-id="leather"]     .cat-card-top { background:linear-gradient(135deg,#FEF5F0,#FCE8DC); }
+.cat-card[data-id="textiles"]    .cat-card-top { background:linear-gradient(135deg,#FFF0F8,#FFE0EE); }
+.cat-card[data-id="jewelry"]     .cat-card-top { background:linear-gradient(135deg,#FFFFF0,#FFFACC); }
+.cat-card[data-id="wooden"]      .cat-card-top { background:linear-gradient(135deg,#FDF6EE,#F5E8D5); }
+
+.filter-bar { display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:2rem; }
+.filter-chip { background:var(--card); border:1.5px solid var(--border); color:var(--muted); font-size:0.78rem; padding:0.38rem 1rem; border-radius:2rem; cursor:pointer; transition:all 0.2s; }
+.filter-chip:hover, .filter-chip.active { border-color:var(--saffron); color:var(--saffron); background:#FFF3E6; }
+    .snav-btn { background: none; border: none; color: rgba(255, 255, 255, 0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; padding: 0.4rem 0.85rem; border-radius: 0.3rem; transition: color 0.2s; }
+    .snav-btn:hover, .snav-btn.active { color: var(--green); }
+.scroll-indicator { position:fixed; bottom:2rem; right:2rem; background:var(--ink); color:var(--cream); font-size:0.75rem; padding:0.5rem 1rem; border-radius:2rem; z-index:100; border:1px solid rgba(212,160,23,0.3); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <div class="nav-links">
+      <a class="nav-link" href="categories.html">Categories</a>
+      <a class="nav-link" href="buyer-home.html">Shop</a>
+       <a class="nav-link" href="my-orders.html">My Orders</a>
+      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+    </div>
+  </nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a><span>›</span>
+  <strong>Handicraft Categories</strong>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-hero-eyebrow">✦ 8 Living Craft Traditions ✦</div>
+    <h1>Handicraft <em>Categories</em></h1>
+    <p>From 400-year-old Etikoppaka lacquer to 3000-year-old Kalamkari — each category is a civilization unto itself.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="cats-grid" id="cats-grid"></div>
+</div>
+
+<!-- Bottom CTA -->
+<div style="background:var(--ink);padding:3.5rem 2rem;text-align:center">
+  <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--cream);margin-bottom:0.8rem">Ready to Shop?</div>
+  <p style="color:rgba(253,246,235,0.5);margin-bottom:1.5rem;font-size:0.9rem">Browse products from all 8 categories, or go directly to a category to see artisan products.</p>
+  <a href="buyer-home.html" class="btn btn-primary">Browse All Products →</a>
+</div>
+
+<script src="shared.js"></script>
+<script src="products-data.js"></script> 
+<script src="shared.js"></script>
+<script>
+// Function to build a single category card
+function buildCat(c, productsPerCat) {
+  const card = document.createElement('a');
+  card.className = 'cat-card'; 
+  card.href = `buyer-home.html?cat=${c.id}`; 
+  card.dataset.id = c.id;
+  card.innerHTML = `
+    <div class="cat-card-top">
+      <div class="cat-bg-emoji">${c.emoji}</div>
+      <div class="cat-icon">${c.emoji}</div>
+      <div class="cat-name">${c.label}</div>
+      <div class="cat-origin">📍 ${c.origin}</div>
+      <div class="cat-age-pill">⏳ ${c.age} tradition</div>
+    </div>
+    <div class="cat-desc">${c.description}</div>
+    <div class="cat-footer">
+      <span class="cat-count">🏺 ${productsPerCat[c.id] || 0} products listed</span>
+      <span class="cat-cta">Shop Now →</span>
+    </div>`;
+  return card;
+}
+
+// Main initialization
+window.addEventListener('DOMContentLoaded', () => {
+  // 1. Render the Nav first so 'cart-count' exists
+  if (typeof renderRoleBasedNav === 'function') {
+    renderRoleBasedNav();
+  }
+
+  // 2. Safely update cart count
+  const cartBadge = document.getElementById('cart-count');
+  if (cartBadge && typeof Store !== 'undefined') {
+    cartBadge.textContent = Store.count();
+  }
+
+  // 3. Prepare Product Counts
+  const PRODUCTS_PER_CAT = {};
+  if (typeof PRODUCTS !== 'undefined') {
+    PRODUCTS.forEach(p => { 
+      PRODUCTS_PER_CAT[p.category] = (PRODUCTS_PER_CAT[p.category] || 0) + 1; 
+    });
+  }
+
+  // 4. Render Categories
+  const grid = document.getElementById('cats-grid');
+  if (grid && typeof CATEGORIES !== 'undefined') {
+    grid.innerHTML = ''; // Clear loading text if any
+    CATEGORIES.forEach(c => grid.appendChild(buildCat(c, PRODUCTS_PER_CAT)));
+  }
+
+});</script>
+</body>
+</html>

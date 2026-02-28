@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artisan Login — Vocal for Local</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --forest-deep: #0A1C06;
+      --forest: #1A3010;
+      --forest-mid: #2D5016;
+      --green: #6EAA2A;
+      --green-lt: #8BC44A;
+      --cream: #F7FDF0;
+      --warm-green: #EDF7E0;
+      --muted: #6B8F52;
+      --border: #C5DFA0;
+      --gold: #A8C44A;
+      --text: #0D2206;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--forest-deep);
+      display: flex;
+      align-items: stretch;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── LEFT ── */
+    .left-panel {
+      width: 46%;
+      background: linear-gradient(155deg, #0A1C06 0%, #1A3010 45%, #0F2408 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem 3.5rem;
+      overflow: hidden;
+    }
+
+    /* Diagonal bamboo-like pattern */
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(-60deg,
+          transparent, transparent 36px,
+          rgba(110, 170, 42, 0.06) 36px,
+          rgba(110, 170, 42, 0.06) 37px);
+    }
+
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      right: -15%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(ellipse, rgba(110, 170, 42, 0.14) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .left-content {
+      position: relative;
+      z-index: 2;
+      max-width: 370px;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.82);
+      margin-bottom: 3.5rem;
+    }
+
+    .brand em {
+      color: var(--green-lt);
+      font-style: normal;
+    }
+
+    .left-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .left-eyebrow::before {
+      content: '';
+      width: 26px;
+      height: 1px;
+      background: var(--gold);
+      display: inline-block;
+    }
+
+    .left-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+      font-weight: 900;
+      color: #e8f5e0;
+      line-height: 1.1;
+      margin-bottom: 1.1rem;
+    }
+
+    .left-heading em {
+      color: var(--green-lt);
+      font-style: italic;
+    }
+
+    .left-sub {
+      font-size: 0.85rem;
+      color: rgba(200, 240, 160, 0.35);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 2.8rem;
+    }
+
+    .perks {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .perk {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      font-size: 0.82rem;
+      color: rgba(200, 240, 160, 0.52);
+    }
+
+    .perk-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green-lt);
+      flex-shrink: 0;
+      box-shadow: 0 0 8px rgba(139, 196, 74, 0.55);
+    }
+
+    .deco-char {
+      position: absolute;
+      bottom: -2rem;
+      right: -1rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 18rem;
+      font-weight: 900;
+      color: rgba(110, 170, 42, 0.03);
+      pointer-events: none;
+    }
+
+    /* ── RIGHT ── */
+    .right-panel {
+      flex: 1;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3.5rem 4rem;
+      position: relative;
+      overflow-y: auto;
+    }
+
+    .right-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(45, 80, 22, 0.06) 1px, transparent 1px);
+      background-size: 22px 22px;
+      pointer-events: none;
+    }
+
+    .right-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      width: 100%;
+      margin: 0 auto;
+      animation: fadeSlide .5s ease both;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .82rem;
+      cursor: pointer;
+      margin-bottom: 2.2rem;
+      padding: 0;
+      transition: color .2s;
+    }
+
+    .back-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-toggle {
+      display: flex;
+      background: rgba(10, 28, 6, 0.08);
+      border-radius: .55rem;
+      padding: .25rem;
+      margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: .56rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--muted);
+      border: none;
+      background: transparent;
+      border-radius: .35rem;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+      text-align: center;
+      display: block;
+    }
+
+    .tab-btn.active {
+      background: #fff;
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    }
+
+    .form-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: .35rem;
+    }
+
+    .form-sub {
+      font-size: .87rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: .71rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: .36rem;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: .9rem;
+      pointer-events: none;
+    }
+
+    .field input {
+      width: 100%;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: .45rem;
+      padding: .7rem .9rem .7rem 2.45rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .93rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .field input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(110, 170, 42, .15);
+    }
+
+    .eye-btn {
+      position: absolute;
+      right: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: .9rem;
+      transition: color .2s;
+    }
+
+    .eye-btn:hover {
+      color: var(--text);
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: .78rem;
+      color: var(--forest-mid);
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 1.4rem;
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .forgot-link:hover {
+      color: var(--green);
+    }
+
+    .btn-main {
+      width: 100%;
+      background: var(--forest-mid);
+      color: #fff;
+      border: none;
+      padding: .9rem;
+      border-radius: .45rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .02em;
+      transition: all .22s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      margin-bottom: .9rem;
+    }
+
+    .btn-main:hover {
+      background: #1e360f;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(45, 80, 22, .35);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+      margin: .8rem 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-text {
+      font-size: .74rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .btn-register {
+      width: 100%;
+      background: transparent;
+      color: var(--forest-mid);
+      border: 1.5px solid var(--green);
+      padding: .78rem;
+      border-radius: .45rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .22s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+    }
+
+    .btn-register:hover {
+      background: var(--warm-green);
+    }
+
+    .bottom-link {
+      text-align: center;
+      font-size: .84rem;
+      color: var(--muted);
+      margin-top: 1.3rem;
+    }
+
+    .bottom-link a {
+      color: #e8872a;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    @media (max-width: 860px) {
+      .left-panel {
+        display: none;
+      }
+
+      .right-panel {
+        padding: 2rem 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="deco-char">🏺</div>
+    <div class="left-content">
+      <div class="brand">Vocal <em>for Local</em></div>
+      <div class="left-eyebrow">Artisan Portal</div>
+      <h1 class="left-heading">Your Craft,<br><em>Your Business,</em><br>Your Terms</h1>
+      <p class="left-sub">Sell directly to buyers across India — zero commission, full transparency, no middlemen ever.
+      </p>
+      <div class="perks">
+        <div class="perk"><span class="perk-dot"></span>Zero platform commission</div>
+        <div class="perk"><span class="perk-dot"></span>Manage your inventory live</div>
+        <div class="perk"><span class="perk-dot"></span>AI-powered smart packaging</div>
+        <div class="perk"><span class="perk-dot"></span>Craft Authenticity QR Code</div>
+        <div class="perk"><span class="perk-dot"></span>Direct buyer communication</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="right-inner">
+      <button class="back-btn" onclick="window.location.href='index.html'">
+        ← Back to Home
+      </button>
+      <div class="tab-toggle">
+        <span class="tab-btn active">Log In</span>
+        <a class="tab-btn" href="seller-register.html">Register</a>
+      </div>
+
+      <h2 class="form-heading">Artisan Login</h2>
+      <p class="form-sub">Access your seller dashboard</p>
+
+      <div class="field">
+        <label>Email / Mobile</label>
+        <div class="input-wrap">
+          <span class="input-icon">✉️</span>
+          <input type="text" id="email" placeholder="artisan@example.com" autocomplete="username" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+          <button class="eye-btn" onclick="togglePwd('password', this)" type="button">👁</button>
+        </div>
+      </div>
+
+      <a href="#" class="forgot-link">Forgot password?</a>
+
+      <button class="btn-main" onclick="handleLogin()">
+        Sign In <span>→</span>
+      </button>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">New to the platform?</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <a href="seller-register.html" class="btn-register">
+        🏺 Register as Artisan
+      </a>
+
+      <div class="bottom-link">
+        Not an artisan? <a href="buyer-login.html">Shop as Buyer →</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePwd(id, btn) {
+      const inp = document.getElementById(id);
+      if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+      else { inp.type = 'password'; btn.textContent = '👁'; }
+    }
+
+ function handleLogin() {
+  const email = document.getElementById('email').value.trim();
+  const pass = document.getElementById('password').value.trim();
+
+  if (!email || !pass) { 
+    showToast('Please fill in both Email and Password', 'error'); 
+    return; 
+  }
+
+  // Updated Seller Credentials
+  if (email === "mohanaddanki24@gmail.com" && pass === "Mr_lover2805") {
+    const sellerSession = {
+      name: "Ramaiah", // Updated name
+      city: "Visakapatnam",      // Updated location
+      state: "AP",
+      craft: "Etikoppaka Toys", // Based on your skills
+      email: email
+    };
+
+    localStorage.setItem("role", "seller");
+    localStorage.setItem("vfl_seller", JSON.stringify(sellerSession));
+    localStorage.setItem("user_email", email); //   Essential for database filtering
+
+    showToast('Signing in to Artisan Dashboard…');
+    setTimeout(() => {
+      window.location.href = "orders-seller.html";
+    }, 1200);
+  } else {
+    alert("Invalid Artisan credentials. Please try again.");
+    // Clear fields on failure
+    document.getElementById('password').value = "";
+  }
+}
+    function showToast(msg, type = 'success') {
+      const t = document.createElement('div');
+      t.textContent = (type === 'success' ? '✓ ' : '⚠ ') + msg;
+      t.style.cssText = `position:fixed;top:1.2rem;right:1.5rem;z-index:9999;
+    background:${type === 'error' ? '#c0392b' : '#155724'};color:#fff;
+    padding:.7rem 1.4rem;border-radius:.4rem;font-family:'DM Sans',sans-serif;
+    font-size:.85rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.25);
+    animation:toastIn .3s ease both;`;
+      const s = document.createElement('style');
+      s.textContent = '@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}';
+      document.head.appendChild(s);
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2800 );
+    }
+  </script>
+</body>
+
+</html>
