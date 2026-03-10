@@ -23,13 +23,13 @@
 </head>
 <body>
   <nav class="nav">
-    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <a class="nav-logo" href="/">Vocal <em>for Local</em></a>
     <div class="nav-links">
-      <a class="nav-link" href="categories.html">Categories</a>
-      <a class="nav-link" href="buyer-home.html">Shop</a>
-       <a class="nav-link" href="my-orders.html">My Orders</a>
-      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
-      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+      <a class="nav-link" href="/categories">Categories</a>
+      <a class="nav-link" href="/buyer-home">Shop</a>
+       <a class="nav-link" href="/my-orders">My Orders</a>
+      <a class="nav-cart" href="/cart">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='/'">Log Out</button>
     </div>
 </nav>
 
@@ -57,7 +57,7 @@
       <div style="text-align:center; padding: 3rem;">
         <h3>No orders found for: ${userEmail}</h3>
         <p>Total orders in system: ${allOrders.length}</p>
-        <a href="buyer-home.html" class="btn btn-primary">Try Shopping Again</a>
+        <a href="/buyer-home" class="btn btn-primary">Try Shopping Again</a>
       </div>`;
     return;
   }

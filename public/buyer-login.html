@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Artisan Login — Vocal for Local</title>
+  <title>Buyer Login — Vocal for Local</title>
+  <script src="shared.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <script src="shared.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap"
     rel="stylesheet" />
@@ -19,17 +21,15 @@
     }
 
     :root {
-      --forest-deep: #0A1C06;
-      --forest: #1A3010;
-      --forest-mid: #2D5016;
-      --green: #6EAA2A;
-      --green-lt: #8BC44A;
-      --cream: #F7FDF0;
-      --warm-green: #EDF7E0;
-      --muted: #6B8F52;
-      --border: #C5DFA0;
-      --gold: #A8C44A;
-      --text: #0D2206;
+      --ink: #1C0A00;
+      --cream: #FDF6EB;
+      --warm: #F5E6CC;
+      --saffron: #E8872A;
+      --deep-org: #C1440E;
+      --gold: #D4A017;
+      --muted: #9B7355;
+      --border: #E8D5B0;
+      --card: #FFFBF4;
     }
 
     html,
@@ -39,17 +39,17 @@
 
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--forest-deep);
+      background: var(--ink);
       display: flex;
       align-items: stretch;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* ── LEFT ── */
+    /* ── LEFT PANEL ── */
     .left-panel {
-      width: 46%;
-      background: linear-gradient(155deg, #0A1C06 0%, #1A3010 45%, #0F2408 100%);
+      width: 48%;
+      background: linear-gradient(155deg, #1C0A00 0%, #3D1800 40%, #5A2200 70%, #3D1800 100%);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -59,83 +59,90 @@
       overflow: hidden;
     }
 
-    /* Diagonal bamboo-like pattern */
+    /* Diagonal geometric lines */
     .left-panel::before {
       content: '';
       position: absolute;
       inset: 0;
-      background-image: repeating-linear-gradient(-60deg,
-          transparent, transparent 36px,
-          rgba(110, 170, 42, 0.06) 36px,
-          rgba(110, 170, 42, 0.06) 37px);
+      background-image:
+        repeating-linear-gradient(-45deg,
+          transparent,
+          transparent 38px,
+          rgba(212, 160, 23, 0.06) 38px,
+          rgba(212, 160, 23, 0.06) 39px);
     }
 
+    /* Radial glow */
     .left-panel::after {
       content: '';
       position: absolute;
-      top: 10%;
-      right: -15%;
-      width: 60%;
-      height: 60%;
-      background: radial-gradient(ellipse, rgba(110, 170, 42, 0.14) 0%, transparent 65%);
+      top: 20%;
+      left: -10%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(ellipse, rgba(232, 135, 42, 0.18) 0%, transparent 65%);
       pointer-events: none;
     }
 
     .left-content {
       position: relative;
       z-index: 2;
-      max-width: 370px;
+      max-width: 380px;
     }
 
     .brand {
       font-family: 'Playfair Display', serif;
       font-size: 1.05rem;
       font-weight: 900;
-      color: rgba(255, 255, 255, 0.82);
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.03em;
       margin-bottom: 3.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     .brand em {
-      color: var(--green-lt);
+      color: var(--saffron);
       font-style: normal;
     }
 
     .left-eyebrow {
-      font-size: 0.62rem;
+      font-size: 0.65rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
       display: flex;
       align-items: center;
-      gap: 0.55rem;
+      gap: 0.6rem;
     }
 
     .left-eyebrow::before {
       content: '';
-      width: 26px;
+      display: inline-block;
+      width: 28px;
       height: 1px;
       background: var(--gold);
-      display: inline-block;
     }
 
     .left-heading {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
       font-weight: 900;
-      color: #e8f5e0;
-      line-height: 1.1;
-      margin-bottom: 1.1rem;
+      color: var(--cream);
+      line-height: 1.08;
+      margin-bottom: 1.2rem;
     }
 
     .left-heading em {
-      color: var(--green-lt);
+      color: var(--saffron);
       font-style: italic;
     }
 
     .left-sub {
-      font-size: 0.85rem;
-      color: rgba(200, 240, 160, 0.35);
+      font-size: 0.875rem;
+      color: rgba(253, 246, 235, 0.42);
       line-height: 1.75;
       font-weight: 300;
       margin-bottom: 2.8rem;
@@ -152,30 +159,33 @@
       align-items: center;
       gap: 0.9rem;
       font-size: 0.82rem;
-      color: rgba(200, 240, 160, 0.52);
+      color: rgba(253, 246, 235, 0.55);
     }
 
     .perk-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--green-lt);
+      background: var(--saffron);
       flex-shrink: 0;
-      box-shadow: 0 0 8px rgba(139, 196, 74, 0.55);
+      box-shadow: 0 0 8px rgba(232, 135, 42, 0.6);
     }
 
-    .deco-char {
+    /* Large decorative element */
+    .deco-number {
       position: absolute;
-      bottom: -2rem;
-      right: -1rem;
+      bottom: -1.5rem;
+      right: -2rem;
       font-family: 'Playfair Display', serif;
       font-size: 18rem;
       font-weight: 900;
-      color: rgba(110, 170, 42, 0.03);
+      color: rgba(255, 255, 255, 0.025);
+      line-height: 1;
       pointer-events: none;
+      user-select: none;
     }
 
-    /* ── RIGHT ── */
+    /* ── RIGHT PANEL ── */
     .right-panel {
       flex: 1;
       background: var(--cream);
@@ -187,11 +197,12 @@
       overflow-y: auto;
     }
 
+    /* Subtle dot grid */
     .right-panel::before {
       content: '';
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(45, 80, 22, 0.06) 1px, transparent 1px);
+      background-image: radial-gradient(circle, rgba(26, 10, 0, 0.07) 1px, transparent 1px);
       background-size: 22px 22px;
       pointer-events: none;
     }
@@ -202,13 +213,13 @@
       max-width: 420px;
       width: 100%;
       margin: 0 auto;
-      animation: fadeSlide .5s ease both;
+      animation: fadeSlide 0.55s ease both;
     }
 
     @keyframes fadeSlide {
       from {
         opacity: 0;
-        transform: translateY(16px);
+        transform: translateY(18px);
       }
 
       to {
@@ -220,42 +231,44 @@
     .back-btn {
       display: inline-flex;
       align-items: center;
-      gap: .4rem;
+      gap: 0.4rem;
       background: none;
       border: none;
       color: var(--muted);
       font-family: 'DM Sans', sans-serif;
-      font-size: .82rem;
+      font-size: 0.82rem;
       cursor: pointer;
       margin-bottom: 2.2rem;
       padding: 0;
-      transition: color .2s;
+      transition: color 0.2s;
     }
 
     .back-btn:hover {
-      color: var(--text);
+      color: var(--ink);
     }
 
+    /* Toggle */
     .tab-toggle {
       display: flex;
-      background: rgba(10, 28, 6, 0.08);
-      border-radius: .55rem;
-      padding: .25rem;
-      margin-bottom: 2rem;
+      background: rgba(26, 10, 0, 0.06);
+      border-radius: 0.55rem;
+      padding: 0.25rem;
+      margin-bottom: 2.2rem;
+      gap: 0.15rem;
     }
 
     .tab-btn {
       flex: 1;
-      padding: .56rem;
+      background: transparent;
+      border: none;
+      padding: 0.58rem;
       font-family: 'DM Sans', sans-serif;
-      font-size: .85rem;
+      font-size: 0.86rem;
       font-weight: 500;
       color: var(--muted);
-      border: none;
-      background: transparent;
-      border-radius: .35rem;
       cursor: pointer;
-      transition: all .2s;
+      border-radius: 0.35rem;
+      transition: all 0.22s;
       text-decoration: none;
       text-align: center;
       display: block;
@@ -263,37 +276,39 @@
 
     .tab-btn.active {
       background: #fff;
-      color: var(--text);
+      color: var(--ink);
       font-weight: 700;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .form-heading {
       font-family: 'Playfair Display', serif;
       font-size: 1.85rem;
       font-weight: 900;
-      color: var(--text);
-      margin-bottom: .35rem;
+      color: var(--ink);
+      margin-bottom: 0.35rem;
     }
 
-    .form-sub {
-      font-size: .87rem;
+    .form-subheading {
+      font-size: 0.87rem;
       color: var(--muted);
       margin-bottom: 2rem;
+      font-weight: 400;
     }
 
+    /* Form fields */
     .field {
       margin-bottom: 1.1rem;
     }
 
     .field label {
       display: block;
-      font-size: .71rem;
+      font-size: 0.72rem;
       font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: .09em;
-      margin-bottom: .36rem;
+      letter-spacing: 0.09em;
+      margin-bottom: 0.38rem;
     }
 
     .input-wrap {
@@ -302,10 +317,10 @@
 
     .input-icon {
       position: absolute;
-      left: .85rem;
+      left: 0.85rem;
       top: 50%;
       transform: translateY(-50%);
-      font-size: .9rem;
+      font-size: 0.95rem;
       pointer-events: none;
     }
 
@@ -313,84 +328,85 @@
       width: 100%;
       background: #fff;
       border: 1.5px solid var(--border);
-      border-radius: .45rem;
-      padding: .7rem .9rem .7rem 2.45rem;
+      border-radius: 0.45rem;
+      padding: 0.7rem 0.9rem 0.7rem 2.5rem;
       font-family: 'DM Sans', sans-serif;
-      font-size: .93rem;
-      color: var(--text);
+      font-size: 0.95rem;
+      color: var(--ink);
       outline: none;
-      transition: border-color .2s, box-shadow .2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
     .field input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(110, 170, 42, .15);
+      border-color: var(--saffron);
+      box-shadow: 0 0 0 3px rgba(232, 135, 42, 0.12);
     }
 
     .eye-btn {
       position: absolute;
-      right: .85rem;
+      right: 0.85rem;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
       cursor: pointer;
       color: var(--muted);
-      font-size: .9rem;
-      transition: color .2s;
+      font-size: 0.9rem;
+      line-height: 1;
+      transition: color 0.2s;
     }
 
     .eye-btn:hover {
-      color: var(--text);
+      color: var(--ink);
     }
 
     .forgot-link {
       display: block;
       text-align: right;
-      font-size: .78rem;
-      color: var(--forest-mid);
-      font-weight: 700;
+      font-size: 0.78rem;
+      color: var(--saffron);
+      font-weight: 600;
       cursor: pointer;
       margin-bottom: 1.4rem;
       text-decoration: none;
-      transition: color .2s;
+      transition: color 0.2s;
     }
 
     .forgot-link:hover {
-      color: var(--green);
+      color: var(--deep-org);
     }
 
     .btn-main {
       width: 100%;
-      background: var(--forest-mid);
+      background: var(--saffron);
       color: #fff;
       border: none;
-      padding: .9rem;
-      border-radius: .45rem;
+      padding: 0.9rem 1.5rem;
+      border-radius: 0.45rem;
       font-family: 'DM Sans', sans-serif;
-      font-size: .95rem;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      letter-spacing: .02em;
-      transition: all .22s;
+      letter-spacing: 0.02em;
+      transition: all 0.22s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: .5rem;
-      margin-bottom: .9rem;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
     }
 
     .btn-main:hover {
-      background: #1e360f;
+      background: var(--deep-org);
       transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(45, 80, 22, .35);
+      box-shadow: 0 8px 24px rgba(232, 135, 42, 0.32);
     }
 
     .divider {
       display: flex;
       align-items: center;
-      gap: .8rem;
-      margin: .8rem 0;
+      gap: 0.8rem;
+      margin: 1.1rem 0;
     }
 
     .divider-line {
@@ -400,46 +416,53 @@
     }
 
     .divider-text {
-      font-size: .74rem;
+      font-size: 0.76rem;
       color: var(--muted);
       white-space: nowrap;
     }
 
-    .btn-register {
+    .btn-google {
       width: 100%;
-      background: transparent;
-      color: var(--forest-mid);
-      border: 1.5px solid var(--green);
-      padding: .78rem;
-      border-radius: .45rem;
+      background: #fff;
+      color: #3c4043;
+      border: 1.5px solid var(--border);
+      padding: 0.8rem;
+      border-radius: 0.45rem;
       font-family: 'DM Sans', sans-serif;
-      font-size: .9rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all .22s;
+      transition: all 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: .5rem;
+      gap: 0.5rem;
     }
 
-    .btn-register:hover {
-      background: var(--warm-green);
+    .btn-google:hover {
+      background: var(--warm);
+      border-color: #ccc;
     }
 
     .bottom-link {
       text-align: center;
-      font-size: .84rem;
+      font-size: 0.85rem;
       color: var(--muted);
-      margin-top: 1.3rem;
+      margin-top: 1.4rem;
     }
 
     .bottom-link a {
-      color: #e8872a;
+      color: var(--saffron);
       font-weight: 700;
       text-decoration: none;
+      transition: color 0.2s;
     }
 
+    .bottom-link a:hover {
+      color: var(--deep-org);
+    }
+
+    /* Responsive */
     @media (max-width: 860px) {
       .left-panel {
         display: none;
@@ -456,19 +479,19 @@
 
   <!-- LEFT PANEL -->
   <div class="left-panel">
-    <div class="deco-char">🏺</div>
+    <div class="deco-number">B</div>
     <div class="left-content">
       <div class="brand">Vocal <em>for Local</em></div>
-      <div class="left-eyebrow">Artisan Portal</div>
-      <h1 class="left-heading">Your Craft,<br><em>Your Business,</em><br>Your Terms</h1>
-      <p class="left-sub">Sell directly to buyers across India — zero commission, full transparency, no middlemen ever.
-      </p>
+      <div class="left-eyebrow">Buyer Portal</div>
+      <h1 class="left-heading">Discover <em>Authentic</em><br>Indian Handicrafts</h1>
+      <p class="left-sub">Shop directly from artisan hands in Visakhapatnam —<br>no middlemen, zero commission, pure
+        heritage.</p>
       <div class="perks">
-        <div class="perk"><span class="perk-dot"></span>Zero platform commission</div>
-        <div class="perk"><span class="perk-dot"></span>Manage your inventory live</div>
-        <div class="perk"><span class="perk-dot"></span>AI-powered smart packaging</div>
-        <div class="perk"><span class="perk-dot"></span>Craft Authenticity QR Code</div>
-        <div class="perk"><span class="perk-dot"></span>Direct buyer communication</div>
+        <div class="perk"><span class="perk-dot"></span>Direct from artisan to your home</div>
+        <div class="perk"><span class="perk-dot"></span>Every product carries a story</div>
+        <div class="perk"><span class="perk-dot"></span>0% commission — artisans earn 100%</div>
+        <div class="perk"><span class="perk-dot"></span>GI-tagged craft authenticity</div>
+        <div class="perk"><span class="perk-dot"></span>Eco-friendly packaging on every order</div>
       </div>
     </div>
   </div>
@@ -476,22 +499,22 @@
   <!-- RIGHT PANEL -->
   <div class="right-panel">
     <div class="right-inner">
-      <button class="back-btn" onclick="window.location.href='index.html'">
+      <button class="back-btn" onclick="window.location.href='/'">
         ← Back to Home
       </button>
       <div class="tab-toggle">
         <span class="tab-btn active">Log In</span>
-        <a class="tab-btn" href="seller-register.html">Register</a>
+        <a class="tab-btn" href="/buyer-register">Register</a>
       </div>
 
-      <h2 class="form-heading">Artisan Login</h2>
-      <p class="form-sub">Access your seller dashboard</p>
+      <h2 class="form-heading">Welcome back</h2>
+      <p class="form-subheading">Sign in to your buyer account</p>
 
       <div class="field">
-        <label>Email / Mobile</label>
+        <label>Email Address</label>
         <div class="input-wrap">
           <span class="input-icon">✉️</span>
-          <input type="text" id="email" placeholder="artisan@example.com" autocomplete="username" />
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
         </div>
       </div>
 
@@ -512,16 +535,26 @@
 
       <div class="divider">
         <div class="divider-line"></div>
-        <span class="divider-text">New to the platform?</span>
+        <span class="divider-text">or continue with</span>
         <div class="divider-line"></div>
       </div>
 
-      <a href="seller-register.html" class="btn-register">
-        🏺 Register as Artisan
-      </a>
+      <button class="btn-google">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4"
+            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+          <path fill="#34A853"
+            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+          <path fill="#FBBC05"
+            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+          <path fill="#EA4335"
+            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+        </svg>
+        Continue with Google
+      </button>
 
       <div class="bottom-link">
-        Not an artisan? <a href="buyer-login.html">Shop as Buyer →</a>
+        Don't have an account? <a href="/buyer-register">Create one free →</a>
       </div>
     </div>
   </div>
@@ -533,53 +566,40 @@
       else { inp.type = 'password'; btn.textContent = '👁'; }
     }
 
- function handleLogin() {
-  const email = document.getElementById('email').value.trim();
-  const pass = document.getElementById('password').value.trim();
 
-  if (!email || !pass) { 
-    showToast('Please fill in both Email and Password', 'error'); 
+  async function handleLogin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!email || !password) {
+    showToast("Please enter email and password", 'error');
+    return;
+  }  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
+    showToast("Please enter a valid Email Address.", 'error'); 
     return; 
   }
-
-  // Updated Seller Credentials
-  if (email === "mohanaddanki24@gmail.com" && pass === "Mr_lover2805") {
-    const sellerSession = {
-      name: "Ramaiah", // Updated name
-      city: "Visakapatnam",      // Updated location
-      state: "AP",
-      craft: "Etikoppaka Toys", // Based on your skills
-      email: email
-    };
-
-    localStorage.setItem("role", "seller");
-    localStorage.setItem("vfl_seller", JSON.stringify(sellerSession));
-    localStorage.setItem("user_email", email); //   Essential for database filtering
-
-    showToast('Signing in to Artisan Dashboard…');
-    setTimeout(() => {
-      window.location.href = "orders-seller.html";
-    }, 1200);
-  } else {
-    alert("Invalid Artisan credentials. Please try again.");
-    // Clear fields on failure
-    document.getElementById('password').value = "";
-  }
-}
-    function showToast(msg, type = 'success') {
-      const t = document.createElement('div');
-      t.textContent = (type === 'success' ? '✓ ' : '⚠ ') + msg;
-      t.style.cssText = `position:fixed;top:1.2rem;right:1.5rem;z-index:9999;
-    background:${type === 'error' ? '#c0392b' : '#155724'};color:#fff;
-    padding:.7rem 1.4rem;border-radius:.4rem;font-family:'DM Sans',sans-serif;
-    font-size:.85rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.25);
-    animation:toastIn .3s ease both;`;
-      const s = document.createElement('style');
-      s.textContent = '@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}';
-      document.head.appendChild(s);
-      document.body.appendChild(t);
-      setTimeout(() => t.remove(), 2800 );
+  const buyerCredentials = { email, password };
+  try {
+    const response = await fetch('/api/auth/buyer-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buyerCredentials)
+    });
+    const result = await response.json();
+    if(response.ok) {
+      localStorage.setItem('Token', result.token);
+      localStorage.setItem('Role', 'Buyer');
+      showToast("Login successful!");
+      setTimeout(() => location.href='/categories', 1800);
+    } else {
+      showToast('Login failed : ' + result.message, 'error');
     }
+     
+  } catch(error) {
+    console.error("Backend Error : ", error);
+    showToast("Unknown error occured during login. Please try again!", 'error');
+    }
+}
   </script>
 </body>
 

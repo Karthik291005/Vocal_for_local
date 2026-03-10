@@ -105,15 +105,25 @@ margin-top:1rem;
 background:#1f3a10;
 }
 
+.reg-link {
+    text-align: left;
+    margin-left: 0.5vw;
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.reg-link a {
+    color: var(--forest);
+    font-weight: 700;
+    text-decoration: none;
+}
+
 </style>
 
 </head>
 
 <body>
-
-<nav class="nav">
-<a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
-</nav>
 
 <div class="register-layout">
 
@@ -138,6 +148,7 @@ from local artisans directly to buyers.
 <!-- RIGHT PANEL -->
 
 <div class="reg-right">
+<button class="back-btn" onclick="window.location.href='/'">← Back to Home</button>
 
 <div class="reg-title">Delivery Partner Registration</div>
 
@@ -186,6 +197,10 @@ Fill the details to join the logistics network
 Register as Delivery Partner
 </button>
 
+<div class="reg-link">
+Existing delivery partner? <a href="/shipper-login">Login →</a>
+</div>
+
 </form>
 
 </div>
@@ -211,7 +226,7 @@ document.getElementById("shipperForm").addEventListener("submit", async function
 
     if (response.ok) {
         alert("Registration Successful! Please Login.");
-        window.location.href = "shipper-login.html";
+        window.location.href = "/shipper-login";
     } else {
         const error = await response.json();
         alert(error.message);

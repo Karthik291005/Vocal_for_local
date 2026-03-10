@@ -16,6 +16,7 @@
     .log-left {
       background: linear-gradient(160deg, #0E1C08, #1A3010, #0E1C08);
       padding: 3rem 2.5rem;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -130,10 +131,6 @@
 </head>
 <body>
 
-  <nav class="nav">
-    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
-  </nav>
-
   <div class="login-layout">
     <div class="log-left">
       <div class="log-brand">Vocal <em>for Local</em></div>
@@ -145,6 +142,8 @@
 
     <div class="log-right">
       <div class="log-inner">
+        <button class="back-btn" onclick="window.location.href='/'">← Back to Home</button>
+
         <div class="log-title">Shipper Login</div>
         <div class="log-subtitle">Access the Delivery Partner Dashboard</div>
 
@@ -163,7 +162,7 @@
         </button>
 
         <div class="reg-link">
-          New delivery partner? <a href="shipper-register.html">Register here →</a>
+          New delivery partner? <a href="/shipper-register">Register here →</a>
         </div>
       </div>
     </div>
@@ -185,11 +184,11 @@
         localStorage.setItem("role", "shipper");
         
         alert("Login successful!");
-        window.location.href = "shipper-dashboard.html";
+        window.location.href = "/shipper-dashboard";
       } else {
         // Redirect to registration on failure as requested
         alert("User credentials wrong....");
-        window.location.href = "shipper-login.html";
+        window.location.href = "/shipper-login";
       }
     }
   </script>

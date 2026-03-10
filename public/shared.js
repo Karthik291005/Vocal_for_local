@@ -132,3 +132,18 @@ const ALL_PRODUCTS = PRODUCTS.map(p => {
   const override = sellerOverrides.find(o => o.id === p.id);
   return override ? { ...p, stock: override.stock } : p;
 }).concat(extraProducts);
+
+function showToast(msg, type='success') {
+  const t = document.createElement('div');
+  t.textContent = (type === 'success' ? '✓ ' : '⚠ ') + msg;
+  t.style.cssText = `position:fixed;top:1.2rem;right:1.5rem;z-index:9999;
+    background:${type==='error'?'#c0392b':'#155724'};color:#fff;
+    padding:.7rem 1.4rem;border-radius:.4rem;font-family:'DM Sans',sans-serif;
+    font-size:.85rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.25);
+    animation:toastIn .3s ease both;`;
+  const s = document.createElement('style');
+  s.textContent = '@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}';
+  document.head.appendChild(s);
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2800);
+}

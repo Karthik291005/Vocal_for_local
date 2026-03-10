@@ -47,18 +47,18 @@
 <body>
 
 <nav class="nav">
-    <a class="nav-logo" href="index.html">Vocal <em>for Local</em></a>
+    <a class="nav-logo" href="/">Vocal <em>for Local</em></a>
     <div class="nav-links">
-      <a class="nav-link" href="categories.html">Categories</a>
-      <a class="nav-link" href="buyer-home.html">Shop</a>
-       <a class="nav-link" href="my-orders.html">My Orders</a>
-      <a class="nav-cart" href="cart.html">🛒 <span class="nav-badge" id="cart-count">0</span></a>
-      <button class="snav-btn" onclick="location.href='index.html'">Log Out</button>
+      <a class="nav-link" href="/categories">Categories</a>
+      <a class="nav-link" href="/buyer-home">Shop</a>
+       <a class="nav-link" href="/my-orders">My Orders</a>
+      <a class="nav-cart" href="/cart">🛒 <span class="nav-badge" id="cart-count">0</span></a>
+      <button class="snav-btn" onclick="location.href='/'">Log Out</button>
     </div>
   </nav>
 
 <div class="breadcrumb">
-  <a href="index.html">Home</a><span>›</span>
+  <a href="/">Home</a><span>›</span>
   <strong>Handicraft Categories</strong>
 </div>
 
@@ -78,7 +78,7 @@
 <div style="background:var(--ink);padding:3.5rem 2rem;text-align:center">
   <div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--cream);margin-bottom:0.8rem">Ready to Shop?</div>
   <p style="color:rgba(253,246,235,0.5);margin-bottom:1.5rem;font-size:0.9rem">Browse products from all 8 categories, or go directly to a category to see artisan products.</p>
-  <a href="buyer-home.html" class="btn btn-primary">Browse All Products →</a>
+  <a href="/buyer-home" class="btn btn-primary">Browse All Products →</a>
 </div>
 
 <script src="shared.js"></script>
@@ -89,7 +89,7 @@
 function buildCat(c, productsPerCat) {
   const card = document.createElement('a');
   card.className = 'cat-card'; 
-  card.href = `buyer-home.html?cat=${c.id}`; 
+  card.href = `/buyer-home?cat=${c.id}`; 
   card.dataset.id = c.id;
   card.innerHTML = `
     <div class="cat-card-top">

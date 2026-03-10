@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Buyer Register — Vocal for Local</title>
+<script src="shared.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
@@ -157,10 +158,10 @@
 <!-- RIGHT PANEL -->
 <div class="right-panel">
   <div class="right-inner">
-    <button class="back-btn" onclick="history.back()">← Back to Home</button>
+    <button class="back-btn" onclick="window.location.href='/'">← Back to Home</button>
 
     <div class="tab-toggle">
-      <a class="tab-btn" href="buyer-login.html">Log In</a>
+      <a class="tab-btn" href="/buyer-login">Log In</a>
       <span class="tab-btn active">Register</span>
     </div>
 
@@ -229,7 +230,7 @@
     <p class="terms">By registering, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
 
     <div class="bottom-link">
-      Already have an account? <a href="buyer-login.html">Sign in →</a>
+      Already have an account? <a href="/buyer-login">Sign in →</a>
     </div>
   </div>
 </div>
@@ -264,7 +265,7 @@ function checkMatch() {
   err.textContent = cf && pw !== cf ? "⚠ Passwords don't match" : '';
 }
 
-function handleRegister() {
+async function handleRegister() {
   const fname = document.getElementById('fname').value;
   const email = document.getElementById('email').value;
   const mobile = document.getElementById('mobile').value;
@@ -273,24 +274,29 @@ function handleRegister() {
   if (!fname || !email || !mobile || !pass) { showToast('Please fill in all required fields', 'error'); return; }
   if (pass !== conf) { showToast('Passwords do not match', 'error'); return; }
   if (pass.length < 8) { showToast('Password must be at least 8 characters', 'error'); return; }
-  showToast(`Welcome, ${fname}! Account created.`);
-  setTimeout(() => { window.location.href = 'buyer-home.html'; }, 1400);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast("Please enter a valid Email Address.", 'error'); return; }
+  if (!/^\d{10}$/.test(mobile)) { showToast("Please enter a valid 10-digit Mobile Number.", 'error'); return; }
+  const buyerData = { name: fname, email, password: pass, phone: mobile };
+  try {
+    const response = await fetch('/api/auth/register-buyer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buyerData)    
+    });
+    const result = await response.json();
+    if(response.ok) {
+      showToast("Registration successful!");
+      setTimeout(() => location.href='/buyer-login', 1800);
+    } else {
+      showToast("Registration failed : " + result.message, 'error');
+    }
+  } catch (err) {
+    console.error("Backend Error:", err);
+    showToast("Could not connect to the MongoDB server. Please ensure Node.js is running.", 'error');
+  }
 }
 
-function showToast(msg, type='success') {
-  const t = document.createElement('div');
-  t.textContent = (type === 'success' ? '✓ ' : '⚠ ') + msg;
-  t.style.cssText = `position:fixed;top:1.2rem;right:1.5rem;z-index:9999;
-    background:${type==='error'?'#c0392b':'#155724'};color:#fff;
-    padding:.7rem 1.4rem;border-radius:.4rem;font-family:'DM Sans',sans-serif;
-    font-size:.85rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.25);
-    animation:toastIn .3s ease both;`;
-  const s = document.createElement('style');
-  s.textContent = '@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}';
-  document.head.appendChild(s);
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2800);
-}
+
 </script>
 </body>
 </html>

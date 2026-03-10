@@ -171,7 +171,7 @@
         </button>
 
         <p style="margin-top: 1.5rem; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5);">
-          New here? <a href="buyer-register.html" id="signup-link" style="color:var(--saffron); text-decoration: none; font-weight: 700;">Create an Account</a>
+          New here? <a href="/buyer-register" id="signup-link" style="color:var(--saffron); text-decoration: none; font-weight: 700;">Create an Account</a>
         </p>
       </div>
     </div>
@@ -202,21 +202,21 @@
       if (role === 'buyer') {
         title.textContent = "Buyer Login";
         desc.textContent = "Access authentic heritage products directly.";
-        signup.href = "buyer-register.html";
+        signup.href = "/buyer-register";
       } else if (role === 'seller') {
         title.textContent = "Artisan Login";
         desc.textContent = "Manage your shop and list new creations.";
-        signup.href = "seller-register.html";
+        signup.href = "/seller-register";
       } else {
         title.textContent = "Shipper Login";
         desc.textContent = "Coordinate local heritage deliveries.";
-        signup.href = "shipper-register.html";
+        signup.href = "/shipper-register";
       }
     }
 
     function redirectToLogin() {
       // Redirect based on selected role
-      window.location.href = `${currentRole}-login.html`;
+      window.location.href = `/${currentRole}-login`;
     }
   </script>
 </body>
